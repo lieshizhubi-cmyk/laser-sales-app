@@ -1,0 +1,17 @@
+{
+  "name": "光纤激光切割设备销售作战台（佛山·东莞）",
+  "short_name": "激光作战台",
+  "description": "激光切管/坡口设备销售：客户管理、跟进提醒、话术手册、设备匹配。仅本机使用，不会联系任何客户。",
+  "lang": "zh-CN",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b2a52",
+  "theme_color": "#0b2a52",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

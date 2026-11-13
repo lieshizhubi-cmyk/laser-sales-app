@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>激光销售作战台</title>
+<meta name="description" content="光纤激光切割设备销售作战台（佛山·东莞）">
+<meta name="theme-color" content="#0b2a52">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="激光作战台">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+:root{
+  --bg:#eef2f7; --card:#ffffff; --card2:#f6f8fb; --text:#0f1b2d; --muted:#5a6a80; --faint:#8a98ab; --line:#e1e7ef;
+  --pri:#0b3d6e; --pri2:#1f5f9e; --priSoft:#e3edf8; --acc:#ff6a13; --accSoft:#fff0e6;
+  --ok:#17905a; --okSoft:#e4f5ec; --warn:#b97300; --warnSoft:#fff4dc; --bad:#cf3a17; --badSoft:#fde9e3;
+  --head1:#0a2647; --head2:#1d4f86; --shadow:0 1px 2px rgba(15,27,45,.06),0 4px 14px rgba(15,27,45,.06);
+  --r:16px; --tabh:64px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#0a111e; --card:#121b2c; --card2:#172236; --text:#e6edf6; --muted:#9aaabf; --faint:#6f7f95; --line:#24324a;
+  --pri:#5b9be0; --pri2:#7db2ea; --priSoft:#16294a; --acc:#ff7a2e; --accSoft:#3a2213;
+  --ok:#3cc283; --okSoft:#0f2e21; --warn:#f0b43c; --warnSoft:#33270d; --bad:#ff7356; --badSoft:#3a1810;
+  --head1:#081427; --head2:#13355e; --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme: dark; } }
+:root[data-theme="dark"]{
+  --bg:#0a111e; --card:#121b2c; --card2:#172236; --text:#e6edf6; --muted:#9aaabf; --faint:#6f7f95; --line:#24324a;
+  --pri:#5b9be0; --pri2:#7db2ea; --priSoft:#16294a; --acc:#ff7a2e; --accSoft:#3a2213;
+  --ok:#3cc283; --okSoft:#0f2e21; --warn:#f0b43c; --warnSoft:#33270d; --bad:#ff7356; --badSoft:#3a1810;
+  --head1:#081427; --head2:#13355e; --shadow:0 1px 2px rgba(0,0,0,.3); color-scheme: dark; }
+*{box-sizing:border-box;min-width:0;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Noto Sans SC","Source Han Sans SC",sans-serif;
+  -webkit-font-smoothing:antialiased;overflow-wrap:anywhere;word-break:break-word;-webkit-text-size-adjust:100%}
+button,input,select,textarea{font:inherit;color:inherit}
+.app{min-height:100vh}
+/* top bar */
+.top{position:sticky;top:0;z-index:20;background:linear-gradient(135deg,var(--head1),var(--head2));color:#fff;
+  padding:calc(env(safe-area-inset-top) + 10px) 16px 12px;display:flex;align-items:center;gap:10px;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+.top .back{border:0;background:rgba(255,255,255,.14);color:#fff;width:40px;height:40px;border-radius:12px;font-size:20px;flex:0 0 auto;cursor:pointer}
+.top .ttl{flex:1}
+.top h1{font-size:18px;margin:0;line-height:1.3;font-weight:650;letter-spacing:.3px}
+.top .sub{font-size:12px;opacity:.75}
+.top .beam{width:8px;height:28px;border-radius:4px;background:linear-gradient(var(--acc),#ffb27a);box-shadow:0 0 12px var(--acc);flex:0 0 auto}
+main{padding:14px 14px calc(var(--tabh) + env(safe-area-inset-bottom) + 24px);max-width:1180px;margin:0 auto}
+/* bottom tabs */
+.tabs{position:fixed;left:0;right:0;bottom:0;z-index:30;background:var(--card);border-top:1px solid var(--line);
+  display:grid;grid-template-columns:repeat(6,1fr);padding-bottom:env(safe-area-inset-bottom)}
+.tabs button{border:0;background:none;height:var(--tabh);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--faint);font-size:11px;cursor:pointer;position:relative}
+.tabs button svg{width:24px;height:24px}
+.tabs button.on{color:var(--pri)}
+.tabs button.on::before{content:"";position:absolute;top:0;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px;background:var(--acc)}
+.tabs .badge{position:absolute;top:8px;left:calc(50% + 6px);background:var(--bad);color:#fff;font-size:10px;line-height:16px;min-width:16px;padding:0 4px;border-radius:8px}
+@media (min-width:900px){
+  .tabs{top:0;bottom:0;right:auto;width:200px;display:flex;flex-direction:column;border-top:0;border-right:1px solid var(--line);padding:90px 10px 10px}
+  .tabs button{flex-direction:row;justify-content:flex-start;gap:12px;height:48px;padding:0 14px;border-radius:12px;font-size:15px}
+  .tabs button.on{background:var(--priSoft)}
+  .tabs button.on::before{top:12px;bottom:12px;left:0;right:auto;width:3px;height:auto;border-radius:3px}
+  .tabs .badge{position:static;margin-left:auto}
+  .top{padding-left:216px;z-index:40}
+  main{margin-left:200px;padding:20px 24px 40px;max-width:none}
+  main>.wrap{max-width:1100px;margin:0 auto}
+}
+/* cards */
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;margin:0 0 14px;border:1px solid var(--line)}
+.card h2{font-size:16px;margin:0 0 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card h2 .grow{flex:1}
+.card h2::before{content:"";width:4px;height:16px;border-radius:2px;background:var(--acc);flex:0 0 auto}
+.card h3{font-size:14px;margin:12px 0 6px;color:var(--muted);font-weight:600}
+.muted{color:var(--muted)} .faint{color:var(--faint);font-size:13px} .small{font-size:13px}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media (min-width:700px){ .grid.g2{grid-template-columns:1fr 1fr} .grid.g3{grid-template-columns:1fr 1fr} }
+@media (min-width:1100px){ .grid.g3{grid-template-columns:1fr 1fr 1fr} }
+.grid>.card{margin:0}
+/* hero */
+.hero{background:linear-gradient(135deg,var(--head1),var(--head2) 70%,#2c6aa8);color:#fff;border-radius:20px;padding:18px;margin-bottom:14px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-30px;top:-40px;width:180px;height:180px;border-radius:50%;border:14px solid rgba(255,255,255,.07)}
+.hero::before{content:"";position:absolute;right:56px;top:0;width:3px;height:70px;background:linear-gradient(var(--acc),transparent);box-shadow:0 0 14px var(--acc)}
+.hero .d{font-size:13px;opacity:.8}.hero .t{font-size:22px;font-weight:700;margin:2px 0}.hero .s{font-size:14px;opacity:.9}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+@media (min-width:700px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow)}
+.stat .v{font-size:24px;font-weight:700;line-height:1.2;font-variant-numeric:tabular-nums}
+.stat .l{font-size:12px;color:var(--muted)}
+.stat.bad .v{color:var(--bad)} .stat.warn .v{color:var(--warn)} .stat.acc .v{color:var(--acc)} .stat.ok .v{color:var(--ok)}
+/* list items */
+.list{display:grid;gap:10px}
+@media (min-width:900px){ .list.cols{grid-template-columns:1fr 1fr} }
+.item{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);cursor:pointer;position:relative}
+.card .item{box-shadow:none;background:var(--card2)}
+.item:active{transform:scale(.995)}
+.item .row1{display:flex;gap:8px;align-items:flex-start}
+.item .tt{font-weight:650;font-size:15px;flex:1;line-height:1.4}
+.item .desc{color:var(--muted);font-size:14px;margin-top:4px;white-space:pre-wrap}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:12px;line-height:20px;padding:0 8px;border-radius:999px;background:var(--card2);color:var(--muted);border:1px solid var(--line);white-space:nowrap}
+.card .item .tag{background:var(--card)}
+.tag.pri{background:var(--priSoft);color:var(--pri);border-color:transparent}
+.tag.acc{background:var(--accSoft);color:var(--acc);border-color:transparent}
+.tag.ok{background:var(--okSoft);color:var(--ok);border-color:transparent}
+.tag.warn{background:var(--warnSoft);color:var(--warn);border-color:transparent}
+.tag.bad{background:var(--badSoft);color:var(--bad);border-color:transparent}
+.lvl{flex:0 0 auto;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;font-weight:700;font-size:14px;background:var(--card2);color:var(--muted);border:1px solid var(--line)}
+.lvl.A{background:var(--acc);color:#fff;border-color:transparent}.lvl.B{background:var(--pri);color:#fff;border-color:transparent}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--muted);margin-top:8px}
+.meta b{color:var(--text);font-weight:600}
+.next{margin-top:10px;padding:8px 10px;border-radius:10px;background:var(--card2);font-size:13px;display:flex;gap:8px;align-items:flex-start;flex-wrap:wrap}
+.card .item .next{background:var(--card)}
+.next .lab{color:var(--faint)}
+/* score bars */
+.sbars{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.sbar .l{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+.track{height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+.fill{height:100%;background:var(--pri);border-radius:3px}.fill.acc{background:var(--acc)}
+/* bars chart */
+.bars{display:grid;gap:10px}
+.bar .l{display:flex;justify-content:space-between;gap:8px;font-size:13px;margin-bottom:3px}
+.bar .l span:last-child{color:var(--muted);flex:0 0 auto}
+.bar .track{height:10px;border-radius:5px}
+.bar .fill{border-radius:5px}
+.funnel{display:grid;gap:8px}
+.fun{display:grid;grid-template-columns:72px 1fr;gap:10px;align-items:center}
+.fun .lab{font-size:13px;color:var(--muted)}
+.fun .b{height:34px;margin:0 auto;border-radius:8px;background:linear-gradient(90deg,var(--pri),var(--pri2));color:#fff;font-size:12px;display:flex;align-items:center;justify-content:center;min-width:64px;padding:0 6px;text-align:center;line-height:1.2}
+.fun:last-child .b{background:linear-gradient(90deg,var(--acc),#ff9a56)}
+/* controls */
+.btn{border:1px solid var(--line);background:var(--card);border-radius:12px;min-height:44px;padding:0 14px;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px;color:var(--text);text-align:center;line-height:1.25}
+.btn.pri{background:var(--pri);color:#fff;border-color:transparent}
+.btn.acc{background:var(--acc);color:#fff;border-color:transparent}
+.btn.ghost{background:transparent}
+.btn.bad{color:var(--bad)}
+.btn.sm{min-height:36px;padding:0 10px;font-size:13px;border-radius:10px}
+.btn.icon{width:40px;padding:0}
+.btns{display:flex;flex-wrap:wrap;gap:8px}
+.btns.full>.btn{flex:1 1 140px}
+.qa{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (min-width:700px){.qa{grid-template-columns:repeat(6,1fr)}}
+.qa .btn{flex-direction:column;min-height:64px;font-size:12px;gap:2px;padding:6px}
+.qa .btn i{font-style:normal;font-size:20px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;background:var(--card2);border:1px solid var(--line);padding:4px;border-radius:14px;margin-bottom:14px}
+.seg button{flex:1 1 auto;border:0;background:none;min-height:38px;padding:0 12px;border-radius:10px;font-size:14px;color:var(--muted);cursor:pointer;white-space:nowrap}
+.seg button.on{background:var(--card);color:var(--pri);font-weight:600;box-shadow:var(--shadow)}
+.fld{display:flex;flex-direction:column;gap:5px;margin-bottom:12px}
+.fld>span{font-size:13px;color:var(--muted)}
+.inp,select.inp,textarea.inp{width:100%;min-height:46px;border:1px solid var(--line);background:var(--card);border-radius:12px;padding:10px 12px;font-size:16px;outline:none;appearance:none;-webkit-appearance:none}
+select.inp{background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:32px}
+textarea.inp{min-height:84px;resize:vertical;line-height:1.55}
+.inp:focus{border-color:var(--pri);box-shadow:0 0 0 3px var(--priSoft)}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+.frow .full{grid-column:1/-1}
+@media (min-width:700px){.frow.f3{grid-template-columns:1fr 1fr 1fr}}
+.search{display:flex;gap:8px;margin-bottom:10px}
+.search .inp{flex:1}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px;font-size:14px}
+.chk input{width:22px;height:22px;accent-color:var(--acc)}
+.fab{position:fixed;right:18px;bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 18px);z-index:25;width:58px;height:58px;border-radius:18px;border:0;background:var(--acc);color:#fff;font-size:30px;box-shadow:0 6px 18px rgba(255,106,19,.45);cursor:pointer}
+@media (min-width:900px){.fab{bottom:28px;right:28px}}
+.note{border-radius:12px;padding:10px 12px;font-size:13px;background:var(--priSoft);color:var(--text);margin-bottom:12px}
+.note.warn{background:var(--warnSoft)} .note.bad{background:var(--badSoft)} .note.acc{background:var(--accSoft)}
+.msg{white-space:pre-wrap;background:var(--card2);border:1px dashed var(--line);border-radius:12px;padding:12px;font-size:14px;margin:6px 0 8px}
+.formula{font-size:13px;background:var(--card2);border-radius:10px;padding:10px 12px;margin:6px 0}
+.tl{border-left:2px solid var(--line);margin-left:6px;padding-left:14px}
+.tl .ev{position:relative;padding-bottom:12px}
+.tl .ev::before{content:"";position:absolute;left:-20px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--pri)}
+.tl .ev.q::before{background:var(--acc)}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (min-width:700px){.tiles{grid-template-columns:repeat(3,1fr)}}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:var(--shadow);cursor:pointer;text-align:left}
+.tile i{font-style:normal;font-size:26px;display:block;margin-bottom:6px}
+.tile b{display:block;font-size:15px}.tile span{font-size:12px;color:var(--muted)}
+.edit-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.empty{color:var(--faint);font-size:13px;padding:6px 0}
+svg.chart{width:100%;height:auto;display:block}
+/* sheet */
+.mask{position:fixed;inset:0;background:rgba(5,12,24,.5);z-index:50;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--bg);border-radius:20px 20px 0 0;max-height:92vh;display:none;flex-direction:column;box-shadow:0 -6px 30px rgba(0,0,0,.25)}
+.sheet.show,.mask.show{display:flex}
+.sheet .sh{display:flex;align-items:center;gap:8px;padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+.sheet .sh b{flex:1;font-size:16px}
+.sheet .sb{padding:14px 16px;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.sheet .sf{padding:10px 16px calc(10px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px}
+.sheet .sf .btn{flex:1}
+.grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:8px auto 0}
+@media (min-width:700px){.sheet{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);width:min(680px,94vw);border-radius:20px;max-height:88vh}.grab{display:none}}
+.toast{position:fixed;left:50%;bottom:calc(var(--tabh) + env(safe-area-inset-bottom) + 90px);transform:translateX(-50%);background:rgba(15,27,45,.92);color:#fff;padding:10px 18px;border-radius:999px;font-size:14px;z-index:80;opacity:0;transition:opacity .2s;pointer-events:none;max-width:86vw;text-align:center}
+.toast.show{opacity:1}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top" id="top"></header>
+  <main id="main"></main>
+  <nav class="tabs" id="tabs"></nav>
+</div>
+<div class="mask" id="mask"></div>
+<div class="sheet" id="sheet"><div class="grab"></div><div class="sh"><b id="shTitle"></b><button class="btn sm ghost" data-act="closeSheet">关闭</button></div><div class="sb" id="shBody"></div><div class="sf" id="shFoot"></div></div>
+<div class="toast" id="toast"></div>
+<script>
+"use strict";
+/* ===== 常量与默认内容 ===== */
+const KEY = "wz-sales-app-v1";
+const TYPES = ["钣金加工厂","机箱机柜厂","五金制品厂","门窗与不锈钢加工厂","家具与家电配套厂","汽车零部件厂","工程机械与设备制造厂","激光加工服务商","其他"];
+const DISTRICTS = { 佛山:["顺德","南海","禅城","三水","高明"], 东莞:["长安","虎门","厚街","大岭山","塘厦","凤岗","清溪","横沥","常平","松山湖","寮步","大朗","樟木头","石碣","其他镇街"] };
+const STAGES = ["线索","初步接触","需求确认","拜访/打样","报价","谈判","成交","流失"];
+const TIMINGS = ["1个月内","1-3个月","3-6个月","6个月以上","未明确"];
+const LEVELS = ["A","B","C","D"];
+const SOURCES = ["陌拜","转介绍","展会","网络搜索","阿里/1688","抖音/视频号","老客户","同行/代理","其他"];
+const VISIT_KINDS = ["电话","微信","上门拜访","来厂参观","打样","展会"];
+const QUOTE_STATUS = ["已发送","谈判中","已接受","已拒绝","已过期"];
+const LOSS_REASONS = ["价格","竞品配置更优","售后顾虑","预算推迟","决策人未打通","需求不匹配","打样效果","其他"];
+const WIN_REASONS = ["打样效果好","回本测算清晰","售后承诺","价格/付款方式","关系与信任","交期快","其他"];
+const MODEL_KINDS = ["切管机","坡口切管机","板管一体机","平板切割机","其他"];
+
+const PBS = {
+  钣金加工厂:{pains:["管材结构件靠锯床下料+钻孔，工序多、人工多","小批量多品种，换型慢","部分管件外发，交期和质量受制于人"],pitch:"您这边钣金结构件里的方管、圆管、角钢件，现在多半是锯床下料再划线钻孔。激光切管把下料、开孔、切缺口、榫卯定位一次做完，焊接拼装也更快，交期和人工都能省下来。",scenes:["设备机架、框架方矩管下料与开孔","管件榫卯/插接定位，减少焊接工装","护栏、支架、货架立柱批量件"],qualify:["管材件占产值大概多少？每月管材用量多少吨/支？","常用管型和规格：管径、壁厚范围？","现在用什么工艺？外发加工每月花多少？","已有平板激光吗？有没有用旋转轴切管？"],faq:[["平板激光加旋转轴能代替切管机吗？","偶尔切管可以，但上下料、精度和效率不如专用切管机；管件量大建议专用机。"],["切完还要打磨吗？","常规碳钢、不锈钢切口较光洁，多数可直接焊接，以您的料打样为准。"],["工人难上手吗？","导入图纸自动编程，普通工人培训后可操作，培训安排以厂家为准。"]],focus:"钣金结构件",hook:"像方管、圆管框架件，激光切管可以把锯切下料、钻孔、切缺口一次完成，少一到两道工序。",part:"管件",q:"您这边方管圆管件现在是自己锯床下料，还是外发加工",bring:"方管开孔+榫卯插接样件、锯床与激光工序对比表",obj:"强调不是替代平板激光，而是补管件短板；对有平板机的客户算旋转轴效率差距。"},
+  机箱机柜厂:{pains:["立柱、型材孔位多，冲床开模换模成本高","孔位一致性影响装配","多规格小批量，模具投入大"],pitch:"机柜立柱、横梁、方管框架上孔位多，冲床开孔要做模具、换模慢。激光切管不用模具，图纸改了直接切，孔位一致，装配不用返修。",scenes:["网络/服务器机柜立柱与型材开孔","配电柜、户外柜方管框架","设备外壳骨架、机架"],qualify:["机柜框架用方管还是专用型材？规格多少？","冲孔现在用多少套模具？每年新开模花多少？","孔位精度要求？装配返修多吗？","板材件和管件比例大概多少？"],faq:[["异形截面型材能切吗？","取决于卡盘与软件对截面的支持，建议拿型材实样打样确认。"],["和冲床比哪个快？","大批量单一孔型冲床有优势；多规格、常改图时激光免换模更灵活。"],["精度够吗？","看机型精度参数和打样结果，可现场用检具测孔距。"]],focus:"机箱机柜",hook:"机柜立柱、方管框架上的孔位，激光切管不用开模，图纸改了直接切，孔位一致装配顺。",part:"立柱/型材",q:"您这边机柜立柱开孔现在是冲床加模具，还是外发",bring:"立柱开孔样件、免模具成本测算",obj:"对已有冲床：主打免模具、改图快，把小批量多规格件交给激光。"},
+  五金制品厂:{pains:["小管件多、批量大，锯床+冲床人工密集","招工难，熟练工流失","材料浪费、尾料长"],pitch:"五金管件量大、规格多，锯床加冲床要好几个工人看着。激光切管一根管子进去，切断、冲孔、切槽一次完成，配自动上料可以一个人看多台。",scenes:["健身器材、运动器材管件","卫浴管件、五金配件、货架挂件","小管径批量下料开孔"],qualify:["最小和最大管径多少？壁厚多少？","日/月产量多少件？这道工序几个工人？","现在锯床、冲床各几台？","尾料浪费大概多少？"],faq:[["小管子会不会变形？","选合适卡盘和工艺参数可控制，小管径建议现场打样看效果。"],["能连续生产吗？","带自动上料的机型可整捆放料，连续批量生产。"],["尾料能做多短？","取决于卡盘结构，以机型参数为准。"]],focus:"五金制品",hook:"五金小管件批量大，激光切管把切断、冲孔、切槽一次做完，配自动上料能一人看多台，省人工。",part:"五金管件",q:"您这边管件下料和冲孔现在大概要几个工人在做",bring:"小管件样品、人工节省测算",obj:"主打省人工、招工难，用几个工人一年工资对比设备月供。"},
+  门窗与不锈钢加工厂:{pains:["不锈钢薄壁管怕划伤、切口要美观","护栏扶手花型多，人工切割慢","异形管、装饰管难加工"],pitch:"不锈钢护栏、扶手、门花这类件，最怕切口毛刺和表面划伤。激光切管切口细、热影响小，花型孔、插接口一次切出来，拼装焊接更快更好看。",scenes:["不锈钢护栏、楼梯扶手、立柱开孔","门花、装饰管、屏风花型","不锈钢家具及展示架"],qualify:["主要做不锈钢还是铁艺？常用壁厚多少？","对表面保护有什么要求？","花型/异形管多不多？","现在手工切割还是外发？每月量多少？"],faq:[["不锈钢切口会发黑吗？","用氮气辅助切割切口较亮，用空气更省成本，可打样对比。"],["表面会划伤吗？","可选防划伤卡爪和支撑，看机型配置。"],["花型图纸怎么来？","CAD 图纸导入即可，也可按样品测绘。"]],focus:"不锈钢护栏/门窗/装饰管",hook:"不锈钢扶手、护栏、门花这类件，激光切管切口细，花型孔和插接口一次切出，拼焊更快更美观。",part:"护栏/装饰管",q:"您这边不锈钢管现在是人工切割、冲床，还是外发激光",bring:"不锈钢花型管样件、氮气/空气切口对比样",obj:"主打外观品质和花型订单溢价；外发客户算每月外发费。"},
+  家具与家电配套厂:{pains:["大批量、节拍要求高","圆管/椭圆管/扁管多，开孔后还要弯管","人工多、品质不稳"],pitch:"金属家具和家电支架基本都是大批量管件，最看重节拍和一致性。激光切管配自动上下料，整捆进料、自动切孔切断，弯管前的孔位也一次切好，人省了品质也稳。",scenes:["办公椅架、床架、餐桌椅金属管件","家电支架、底座及配套管件","椭圆管、扁管开孔与切断"],qualify:["常用管型（圆/椭圆/扁/方）和规格？","日产量和节拍要求？","开孔后要不要弯管？孔位精度要求？","现在几道工序、多少人？"],faq:[["椭圆管、扁管能切吗？","多数切管机支持椭圆/腰圆管，需确认机型支持的管型并打样。"],["弯管后孔位会不会偏？","可在软件中做展开补偿，以打样验证。"],["能对接生产线吗？","带自动上下料的机型可与后道衔接，方案按现场设计。"]],focus:"金属家具/家电配套管件",hook:"家具、家电配套管件批量大，激光切管配自动上下料，整捆进料自动切孔切断，人少了一致性也更好。",part:"家具/家电管件",q:"您这边管件日产量大概多少，开孔是冲床还是钻床在做",bring:"椭圆管/扁管样件、节拍测算表",obj:"主打批量节拍和人工；对太贵按单件成本拆分。"},
+  汽车零部件厂:{pains:["质量一致性与追溯要求高","多品种量产，换型频繁","主机厂年年降本"],pitch:"座椅骨架、排气、防撞梁这类管件，主机厂对一致性要求很高。激光切管靠程序保证每一件孔位一致，换型只需调程序，配合自动化能稳定量产。",scenes:["座椅骨架、头枕管","排气管、支架、防撞梁管件","摩托车/电动车车架管"],qualify:["一级还是二级供应商？主要产品？","精度和一致性要求？需要检测记录吗？","年产量、换型频率？","设备采购是否要走审核或招标流程？"],faq:[["精度能保证吗？","以机型精度参数和批量打样检测数据为准，可做首件与批量对比。"],["能接入 MES 吗？","取决于数控系统接口，需与厂家确认。"],["高强钢能切吗？","可以，速度和切口质量按材料打样确认。"]],focus:"汽车零部件",hook:"座椅骨架、排气、支架类管件，激光切管靠程序保证孔位一致，换型只改程序，适合多品种量产。",part:"汽车管件",q:"您这边管件的孔位一致性现在靠工装保证吗",bring:"高一致性样件和检测数据、自动化方案",obj:"主打一致性、减少工装、降本；对比竞品时拉同配置对比表。"},
+  工程机械与设备制造厂:{pains:["厚壁大管、型钢多","焊接坡口靠人工打磨或铣床，慢且不一致","火焰/等离子精度差，后加工多"],pitch:"工程机械和设备制造的厚壁管、型钢件，下料后还要人工打坡口才能焊。坡口切管机切断、开孔、坡口一次完成，焊缝质量更稳，省掉打磨和铣坡口两道工序。",scenes:["臂架、支腿、底盘结构件","输送设备、钢结构机架","厚壁管/H型钢/槽钢坡口与开孔"],qualify:["最大管径、壁厚和管长？有没有H型钢、槽钢？","焊接坡口现在怎么做？几个人在打坡口？","现在用火焰、等离子还是锯床？","焊接质量要求（探伤/标准）？"],faq:[["坡口角度能做多少？","以机型坡口参数为准，常见支持V/Y/K等坡口，打样确认。"],["厚壁能切多厚？","取决于激光功率与材料，按您的料打样。"],["大管很重，上料怎么办？","可选重型上料架/自动上料，按管重设计方案。"]],focus:"工程机械/设备结构件",hook:"厚壁管、型钢件下料后再人工打坡口很费工，坡口切管机能把切断、开孔、坡口一次做完，焊缝更稳。",part:"厚壁管/型钢",q:"您这边焊接坡口现在是人工打磨还是铣床在做",bring:"坡口切割样件、坡口工序节省测算",obj:"主打坡口一体省工序；对已有等离子讲精度和后道省工。"},
+  激光加工服务商:{pains:["接单要求多样，设备覆盖面要广","稼动率和回本周期是核心","价格战，需要差异化能力"],pitch:"做加工服务的，设备就是赚钱工具，核心是接单范围、稼动率和回本。切管机能把管材单接下来，带坡口和自动上料的话还能做别人做不了的单，夜班少人也能跑。",scenes:["对外承接管材切割、开孔","坡口加工、型钢加工差异化接单","板材客户顺带的管件订单"],qualify:["现在有哪些设备？每月有多少管材单在往外推？","客户管材订单的管径、壁厚范围？","设备稼动率多少？开不开夜班？","期望回本周期？"],faq:[["多久能回本？","取决于订单量和加工单价，用回本计算器按您的数据测算。"],["管型越多越好吗？","覆盖越广接单面越大，但要匹配主要订单，避免过度配置。"],["能接坡口单吗？","选带坡口功能的机型可承接焊接坡口订单。"]],focus:"激光加工服务",hook:"如果您那边有管材单在往外推，加一台切管机就能把这部分利润留下来，带坡口还能接差异化订单。",part:"管材订单",q:"您这边每个月有没有管材单因为没设备推掉",bring:"回本测算表、坡口/型钢差异化样件",obj:"一切围绕回本：用订单量×加工单价算月收入。"},
+  其他:{pains:["管材加工依赖锯床、钻床或外发","人工成本高、交期长"],pitch:"只要产品里有管材或型钢件，激光切管就能把下料、开孔、切槽合并成一道工序，省人工、缩交期。",scenes:["各类金属管件下料开孔","型钢件切割","焊接结构件坡口"],qualify:["产品里管材件多不多？什么规格？","现在怎么加工？每月量多少？","最头疼的是人工、交期还是质量？"],faq:[["我们量不大值得上吗？","用回本计算器按外发费和人工算，量不大也可先考虑入门机型。"],["能先看效果吗？","可以免费打样。"]],focus:"金属制品",hook:"如果产品里有管材件，激光切管能把下料、开孔一次完成，省人工、缩交期。",part:"管件",q:"您这边产品里管材件多不多，现在怎么加工",bring:"通用管件样品、回本测算表",obj:"先找到最痛的工序，再谈设备。"}
+};
+const GENERAL_Q = ["谁拍板？还需要谁参与评估？","预算区间？考虑全款、分期还是融资租赁？","计划什么时候上设备？有没有交期节点？"];
+const OBJECTIONS = [
+  ["太贵了","先拆价值再谈价格：按人工、外发、材料、交期算回本；确认是预算问题还是价值没被认同。","理解，设备是大投入。我们先不谈价格，按您每月的管材加工量算一笔账：省下的人工和外发费多久能把设备钱赚回来。算出来不划算，我不会硬推。"],
+  ["已经有设备了","问清现有设备（锯床/冲床/平板加旋转轴/老切管机）的瓶颈，定位为补产能、上新工艺、替代外发。","您现在的设备主要做哪些件？满负荷吗？很多工厂上切管机不是替换，而是把最费人工的那部分管件拿出来自动化。"],
+  ["对比大族、宏山、邦德等","不贬低竞品；引导客户按同配置逐项对比：激光器、切割头、数控系统、卡盘、上料方式、质保范围、本地响应时间、付款方式；突出切管/坡口专精。","这几家都是行业知名品牌，您多对比是对的。建议拉一张同配置对比表：激光器品牌功率、切割头、系统、卡盘、上料方式、质保和本地上门时间。我把我们的配置单发您，同配置下再比价格和服务。"],
+  ["担心售后","把售后讲具体：响应时间、上门时间、质保范围、配件库存、培训（以公司实际政策为准）；安排就近老客户参观。","售后确实最关键。质保范围、响应和上门时间我可以按公司政策写进合同。也可以安排您去附近在用的工厂看看，直接问他们。"],
+  ["再考虑考虑","找出真实顾虑（效果/价格/决策人/时机），给一个低门槛的下一步：打样、参观、算账。","好的，没问题。方便说下主要还在考虑哪一块吗？是效果、价格，还是要跟老板商量？如果是效果，我先拿您的料免费打样，样件出来您再决定。"]
+];
+const TECH = [
+  ["激光功率（W）","相当于马力。功率越高，能切的壁厚越厚、同厚度切得越快；但价格和耗电也越高。按主要材料壁厚和产能选，不是越大越好。"],
+  ["管径范围 / 卡盘","卡盘能夹住的最小到最大管子尺寸，决定能做哪些产品。气动/电动卡盘、双卡盘/三卡盘影响夹持稳定性和尾料。"],
+  ["上料管长","一次能放多长的原料管。原料常见 6 米，做长件或减少换料可选更长。"],
+  ["尾料长度","切到最后剩下浪费的那一段，越短越省料。三卡盘、零尾料设计能明显降低浪费。"],
+  ["定位精度 / 重复定位精度","前者是切出来的孔位跟图纸差多少，后者是批量每一件差多少；做装配件更要看重复定位精度。"],
+  ["速度 / 加速度","最高速度好看，但小孔多、短件多时，加速度和整体节拍更决定效率。看打样节拍最实在。"],
+  ["激光器","光源，相当于发动机。国产主流品牌性价比高、配件好找；进口品牌稳定性口碑好、价格高。"],
+  ["切割头","把激光聚焦到材料上。自动调焦切割头能按材料自动换焦点，换料快、少调试；坡口切割头可摆角度。"],
+  ["数控系统","设备的大脑加软件，决定操作难度、套料排版、管材识别和补偿能力。"],
+  ["自动上下料","整捆放料自动上料、切完自动下料，一人可看多台，适合批量生产和夜班。"],
+  ["坡口切割","切割头倾斜切出 V/Y/K 形焊接坡口，省去后续铣、磨坡口工序，适合厚壁焊接件。"],
+  ["辅助气体","氧气切碳钢厚料快但断面发黑；氮气切不锈钢断面亮白；空气切薄料最省钱。"]
+];
+const MARKET = [
+  ["佛山·顺德","家电整机及配套、家具（乐从、龙江一带）、机械装备","家具与家电配套、钣金、设备制造","中小功率+自动上料；设备厂推坡口机","抓家电支架、家具管件批量件，以回本和省人工切入"],
+  ["佛山·南海","铝型材、五金、不锈钢制品、汽配（狮山一带）","五金、门窗与不锈钢、汽车零部件","1.5–3kW 切管机；汽配推高精度+自动化","不锈钢厂看切口外观，汽配厂看一致性"],
+  ["佛山·禅城","不锈钢加工与贸易（澜石一带）、陶瓷机械、金属加工","门窗与不锈钢、设备制造、激光加工服务商","薄壁不锈钢切管机","不锈钢加工点多，适合转介绍滚动开发"],
+  ["佛山·三水 / 高明","家电、金属材料、新材料与装备制造","家电配套、钣金、设备制造","按客户壁厚选功率","工业园区集中，适合园区扫楼式陌拜"],
+  ["东莞·长安","五金模具、电子配件、精密五金","五金制品、机箱机柜","小管径+自动上料","人工成本敏感，主打省人工"],
+  ["东莞·厚街 / 大岭山","家具（含金属家具）、家具配套","家具与家电配套","自动上料切管机，支持椭圆管","结合家具展会节点开发"],
+  ["东莞·塘厦 / 凤岗 / 清溪","精密五金、电子、机箱机柜","机箱机柜、五金制品、钣金","高精度切管或板管兼顾","看孔位精度和免模具"],
+  ["东莞·横沥 / 常平 / 樟木头","模具、机械、五金加工","钣金、设备制造、激光加工服务商","中高功率，可选坡口","加工服务商多，主打接单面和回本"],
+  ["东莞·松山湖 / 寮步","电子信息、智能装备、汽配相关","汽车零部件、设备制造、激光加工服务商","高精度+自动化","决策流程较长，提前找技术和采购"],
+  ["东莞·虎门","服装为主，也有电线电缆与五金配套","钣金、其他、激光加工服务商","入门机型","以转介绍为主，避免盲扫"]
+];
+const STEPS = [["按产业带划片","每周固定 2 个片区（如周二顺德、周四长安），同一片区集中陌拜和回访，减少路上时间。"],["先打样板客户","每个片区先拿下 1 家标杆客户，后续带客户参观，转介绍效率最高。"],["线上线下结合","抖音/视频号发打样视频，留资后 24 小时内电话跟进。"],["每周复盘","看漏斗各阶段转化率，卡在哪个阶段就补那个阶段的动作。"]];
+
+/* 话术列表的字段定义（可编辑） */
+const LISTS = {
+  msgs:{label:"首次联系消息模板",f:[["t","模板名称","text"],["a","内容（可用占位符 {联系人} {公司} {我} {我司}）","textarea"]],copy:true,fill:true},
+  pitch:{label:"开发话术",f:[["t","标题","text"],["a","话术内容","textarea"]],copy:true},
+  pains:{label:"客户痛点",f:[["t","痛点","textarea"]]},
+  scenes:{label:"设备应用场景",f:[["t","应用场景","textarea"]]},
+  qualify:{label:"需求判断问题（本行业）",f:[["t","问题","textarea"]],copy:true},
+  faq:{label:"常见问题回答",f:[["t","客户问","textarea"],["a","建议回答","textarea"]],copy:true},
+  bring:{label:"拜访携带物品",f:[["t","物品/资料","text"]]},
+  general:{label:"通用需求判断问题（所有行业）",f:[["t","问题","textarea"]],copy:true,shared:true},
+  objections:{label:"异议处理（所有行业）",f:[["t","异议","text"],["a","应对思路","textarea"],["b","参考话术","textarea"]],copy:true,shared:true},
+  tech:{label:"技术参数通俗解释",f:[["t","参数","text"],["a","跟客户这样讲","textarea"]],copy:true,shared:true}
+};
+const TYPE_LIST_ORDER = ["msgs","pitch","pains","scenes","qualify","faq","bring"];
+const SHARED_LIST_ORDER = ["general","objections","tech"];
+</script>
+<script>
+"use strict";
+/* ===== 工具函数 ===== */
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const pad = (n) => (n < 10 ? "0" + n : "" + n);
+const fmt = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+const addDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return fmt(d); };
+const toDate = (s) => new Date(s + "T00:00:00");
+const diffDays = (a, b) => Math.round((toDate(a) - toDate(b)) / 86400000);
+const uid = () => Math.random().toString(36).slice(2, 10);
+const wan = (n) => (Math.round((Number(n) || 0) * 10) / 10) + "万";
+const todayStr = () => fmt(new Date());
+const it = (t, a, b) => ({ id: uid(), t: t || "", a: a || "", b: b || "" });
+const opt = (arr, v, ph) => (ph != null ? `<option value="">${esc(ph)}</option>` : "") + arr.map((o) => { const val = typeof o === "object" ? o.v : o, lab = typeof o === "object" ? o.l : o; return `<option value="${esc(val)}" ${String(val) === String(v) ? "selected" : ""}>${esc(lab)}</option>`; }).join("");
+
+/* ===== 默认话术 ===== */
+function wxMsg(p){ return "{联系人}您好，我是{我司}的{我}，主要做光纤激光切管机和坡口切管设备。了解到{公司}主要做" + p.focus + "，" + p.hook + "\n\n我们可以免费打样：您发一张常做的" + p.part + "图纸或寄个样件，我先出加工方案和节拍测算，合适再细聊，不合适也给您做个参考。谢谢！"; }
+function phoneMsg(p){ return "您好，请问是{公司}的{联系人}吗？我是{我司}的{我}，耽误您一分钟。\n我们专做激光切管设备，主要服务" + p.focus + "这类工厂。想请教一下：" + p.q + "？\n（对方回应后）明白。如果方便，我想带一份" + p.part + "的打样方案过去给您看看，您这周哪天比较方便？"; }
+function followMsg(p){ return "{联系人}您好，我是{我司}的{我}。上次聊到的" + p.part + "加工，我整理了一份加工方案和回本测算，想约您 15 分钟过一下，或者您方便的话我把资料先发您看看？"; }
+function defTypeLists(t){
+  const p = PBS[t] || PBS["其他"];
+  return {
+    msgs:[it("微信首次添加/私信", wxMsg(p)), it("电话开场白", phoneMsg(p)), it("二次跟进", followMsg(p))],
+    pitch:[it("开发话术", p.pitch), it("一句话卖点", p.hook), it("本行业专属打法", p.obj)],
+    pains:p.pains.map((x) => it(x)), scenes:p.scenes.map((x) => it(x)), qualify:p.qualify.map((x) => it(x)),
+    faq:p.faq.map((f) => it(f[0], f[1])), bring:p.bring.split("、").map((x) => it(x))
+  };
+}
+function defShared(){ return { general:GENERAL_Q.map((x) => it(x)), objections:OBJECTIONS.map((o) => it(o[0], o[1], o[2])), tech:TECH.map((x) => it(x[0], x[1])) }; }
+function defScripts(){ const byType = {}; TYPES.forEach((t) => { byType[t] = defTypeLists(t); }); return Object.assign({ byType }, defShared()); }
+
+/* ===== 示例数据 ===== */
+function blankCustomer(){ return { id:"", name:"", type:"钣金加工厂", city:"佛山", district:"顺德", contact:"", phone:"", wechat:"", website:"", products:"", need:"", existing:"", budget:0, timing:"未明确", level:"C", source:"陌拜", lastContact:todayStr(), nextAction:"", nextDate:addDays(3), stage:"线索", needFit:3, createdAt:todayStr(), note:"" }; }
+function blankModel(){ return { id:"", name:"", kind:"切管机", power:3000, sheet:"无", tubeMin:20, tubeMax:160, tubeLen:6, shapes:"圆管、方矩管", accuracy:"", speed:"", laser:"", head:"", cnc:"", automation:"", autoLoad:false, bevel:false, bevelDesc:"", service:"", price:0, profit:0 }; }
+function seed(){
+  const c = (o) => Object.assign(blankCustomer(), { sample:true, id:uid() }, o);
+  const cs = [
+    c({ name:"示例-顺德XX钣金厂", type:"钣金加工厂", city:"佛山", district:"顺德", contact:"示例-陈生", wechat:"demo-wx-01", products:"设备机架、钣金外壳、方管框架", need:"方管圆管下料开孔，替代锯床+钻床", existing:"3015平板激光1台、锯床2台", budget:40, timing:"1-3个月", level:"A", source:"陌拜", lastContact:addDays(-3), nextAction:"带打样件二次拜访，现场测算回本", nextDate:addDays(0), stage:"拜访/打样", needFit:4, createdAt:addDays(-20) }),
+    c({ name:"示例-南海XX不锈钢制品厂", type:"门窗与不锈钢加工厂", city:"佛山", district:"南海", contact:"示例-李总", wechat:"demo-wx-02", products:"不锈钢护栏、楼梯扶手、装饰管", need:"薄壁不锈钢管切割，切口美观", existing:"人工切割+冲床", budget:25, timing:"3-6个月", level:"B", source:"转介绍", lastContact:addDays(-10), nextAction:"发送同类案例视频，约来厂参观", nextDate:addDays(-2), stage:"需求确认", needFit:4, createdAt:addDays(-15) }),
+    c({ name:"示例-长安XX五金厂", type:"五金制品厂", city:"东莞", district:"长安", contact:"示例-王经理", wechat:"demo-wx-03", products:"健身器材管件、五金配件", need:"小管径批量切割，需自动上料", existing:"锯床4台、冲床3台", budget:30, timing:"1个月内", level:"A", source:"展会", lastContact:addDays(-1), nextAction:"跟进报价，确认付款方式", nextDate:addDays(2), stage:"报价", needFit:5, createdAt:addDays(-12) }),
+    c({ name:"示例-长安XX五金制品有限公司", type:"五金制品厂", city:"东莞", district:"长安", contact:"示例-王经理", wechat:"demo-wx-03", products:"五金配件", budget:0, timing:"未明确", level:"C", source:"网络搜索", lastContact:addDays(-20), nextAction:"核实是否与已有客户重复", nextDate:addDays(5), stage:"线索", needFit:3, createdAt:addDays(-2) }),
+    c({ name:"示例-厚街XX金属家具厂", type:"家具与家电配套厂", city:"东莞", district:"厚街", contact:"示例-张生", wechat:"demo-wx-05", products:"金属办公椅架、床架", need:"椭圆管/圆管批量切割开孔", existing:"外发加工", budget:35, timing:"3-6个月", level:"B", source:"抖音/视频号", lastContact:addDays(-16), nextAction:"电话回访，邀请看机", nextDate:addDays(4), stage:"初步接触", needFit:4, createdAt:addDays(-25) }),
+    c({ name:"示例-顺德XX机械设备公司", type:"工程机械与设备制造厂", city:"佛山", district:"顺德", contact:"示例-刘工", wechat:"demo-wx-06", products:"输送设备、钢结构机架", need:"厚壁管切割+焊接坡口", existing:"等离子切割、人工打坡口", budget:90, timing:"6个月以上", level:"B", source:"老客户", lastContact:addDays(-7), nextAction:"提交坡口切割技术方案", nextDate:addDays(6), stage:"需求确认", needFit:5, createdAt:addDays(-30) }),
+    c({ name:"示例-松山湖XX激光加工中心", type:"激光加工服务商", city:"东莞", district:"松山湖", contact:"示例-黄总", wechat:"demo-wx-07", products:"对外承接板材激光加工", need:"扩充切管产能，多管型", existing:"平板激光3台", budget:60, timing:"1-3个月", level:"A", source:"同行/代理", lastContact:addDays(-5), nextAction:"谈判：付款方式和交期", nextDate:addDays(1), stage:"谈判", needFit:4, createdAt:addDays(-40) }),
+    c({ name:"示例-南海XX汽配厂", type:"汽车零部件厂", city:"佛山", district:"南海", contact:"示例-周经理", products:"座椅骨架管件", need:"高一致性管件切割", existing:"锯床+工装钻孔", budget:45, timing:"未明确", level:"C", source:"网络搜索", lastContact:addDays(-30), nextAction:"", nextDate:"", stage:"流失", needFit:3, createdAt:addDays(-60) }),
+    c({ name:"示例-虎门XX金属加工厂", type:"钣金加工厂", city:"东莞", district:"虎门", contact:"示例-吴生", products:"货架、支架", need:"方管开孔", existing:"锯床", budget:28, timing:"1个月内", level:"A", source:"转介绍", lastContact:addDays(-4), nextAction:"安排交付与培训", nextDate:addDays(10), stage:"成交", needFit:4, createdAt:addDays(-35) })
+  ];
+  const id = (i) => cs[i].id;
+  const m = (o) => Object.assign(blankModel(), { sample:true, id:uid() }, o);
+  return {
+    customers: cs,
+    visits: [
+      { id:uid(), sample:true, customerId:id(0), date:addDays(-3), kind:"上门拜访", summary:"看了现场管件，主要是方管和矩形管，月用量较大，老板关心人工和交期", next:"用客户的料打样" },
+      { id:uid(), sample:true, customerId:id(2), date:addDays(-12), kind:"展会", summary:"展会留资，对自动上料感兴趣", next:"上门看现场" },
+      { id:uid(), sample:true, customerId:id(2), date:addDays(-1), kind:"电话", summary:"已收到报价，觉得偏高，想要分期", next:"确认付款方式" },
+      { id:uid(), sample:true, customerId:id(6), date:addDays(-5), kind:"上门拜访", summary:"老板对比了两家竞品，关心本地售后响应", next:"带售后承诺书和老客户案例" }
+    ],
+    quotes: [
+      { id:uid(), sample:true, customerId:id(2), model:"示例型号A · 3000W 自动上料切管机", price:32, discount:3, date:addDays(-2), status:"已发送", note:"含自动上料" },
+      { id:uid(), sample:true, customerId:id(6), model:"示例型号B · 6000W 重型切管坡口机", price:58, discount:5, date:addDays(-6), status:"谈判中", note:"客户要求延长质保" }
+    ],
+    reviews: [
+      { id:uid(), sample:true, customerId:id(7), result:"流失", amount:0, reason:"价格", competitor:"同类竞品", lessons:"没有尽早接触决策人，报价前未做回本测算", date:addDays(-30) },
+      { id:uid(), sample:true, customerId:id(8), result:"成交", amount:28, reason:"打样效果好", competitor:"", lessons:"打样当天带回本测算，老板当场拍板", date:addDays(-2) }
+    ],
+    models: [
+      m({ name:"示例型号A · 3000W 自动上料切管机", kind:"切管机", power:3000, sheet:"无", tubeMin:20, tubeMax:160, tubeLen:6, shapes:"圆管、方矩管、椭圆管、腰圆管", accuracy:"±0.05mm", speed:"（填写空移速度/加速度）", laser:"（填写激光器品牌）", head:"（填写，如自动调焦切割头）", cnc:"（填写数控系统）", automation:"整捆自动上料", autoLoad:true, service:"（填写质保、响应和上门时间）", price:30, profit:3 }),
+      m({ name:"示例型号B · 6000W 重型切管坡口机", kind:"坡口切管机", power:6000, sheet:"无", tubeMin:60, tubeMax:350, tubeLen:9, shapes:"圆管、方矩管、H型钢、槽钢、角钢", accuracy:"±0.1mm", speed:"（填写）", laser:"（填写）", head:"（填写坡口切割头）", cnc:"（填写）", automation:"重型自动上料", autoLoad:true, bevel:true, bevelDesc:"（填写坡口角度范围）", service:"（填写）", price:60, profit:6 }),
+      m({ name:"示例型号C · 1500W 轻型切管机", kind:"切管机", power:1500, sheet:"无", tubeMin:10, tubeMax:120, tubeLen:6, shapes:"圆管、方管、矩形管", accuracy:"±0.05mm", speed:"（填写）", laser:"（填写）", head:"（填写）", cnc:"（填写）", automation:"手动上料", service:"（填写）", price:15, profit:1.5 })
+    ],
+    kpi: { leads:10, contacts:30, visits:5, quotes:3, deals:1, amount:30 },
+    me: { name:"（你的名字）", company:"伟卓激光（江门裕米激光）" },
+    scripts: defScripts(),
+    roi: { price:30, workers:3, wage:7000, outsource:8000, material:100000, gain:3, extra:0, run:6000 },
+    theme: "auto"
+  };
+}
+
+/* ===== 存储 ===== */
+let STORAGE_OK = true;
+function load(){ try { const s = localStorage.getItem(KEY); return s ? JSON.parse(s) : null; } catch (e) { STORAGE_OK = false; return null; } }
+function normalize(d){
+  const base = seed();
+  ["customers","visits","quotes","reviews","models"].forEach((k) => { if (!Array.isArray(d[k])) d[k] = []; });
+  d.kpi = Object.assign({}, base.kpi, d.kpi || {});
+  d.me = Object.assign({}, base.me, d.me || {});
+  d.roi = Object.assign({}, base.roi, d.roi || {});
+  d.theme = d.theme || "auto";
+  if (!d.scripts || typeof d.scripts !== "object") d.scripts = defScripts();
+  if (!d.scripts.byType) d.scripts.byType = {};
+  TYPES.forEach((t) => { const def = defTypeLists(t); const cur = d.scripts.byType[t] || (d.scripts.byType[t] = {}); TYPE_LIST_ORDER.forEach((k) => { if (!Array.isArray(cur[k])) cur[k] = def[k]; }); });
+  const sh = defShared(); SHARED_LIST_ORDER.forEach((k) => { if (!Array.isArray(d.scripts[k])) d.scripts[k] = sh[k]; });
+  d.customers.forEach((c) => { Object.keys(blankCustomer()).forEach((k) => { if (c[k] == null) c[k] = blankCustomer()[k]; }); c.budget = Number(c.budget) || 0; c.needFit = Number(c.needFit) || 3; });
+  d.models.forEach((m) => { Object.keys(blankModel()).forEach((k) => { if (m[k] == null) m[k] = blankModel()[k]; }); });
+  return d;
+}
+let S = normalize(load() || seed());
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); STORAGE_OK = true; } catch (e) { STORAGE_OK = false; toast("保存失败：当前浏览器不允许本地存储，请及时备份"); } }
+
+/* ===== 评分 ===== */
+const LEVEL_POT = { A:25, B:18, C:10, D:4 }, LEVEL_PROB = { A:15, B:10, C:5, D:2 };
+const TYPE_W = { 工程机械与设备制造厂:10, 汽车零部件厂:9, 激光加工服务商:9, 钣金加工厂:8, 机箱机柜厂:7, 门窗与不锈钢加工厂:7, 家具与家电配套厂:7, 五金制品厂:6, 其他:5 };
+const STAGE_PTS = { 线索:5, 初步接触:12, 需求确认:22, "拜访/打样":30, 报价:38, 谈判:45, 成交:45, 流失:0 };
+const TIMING_PTS = { "1个月内":25, "1-3个月":18, "3-6个月":10, "6个月以上":4, 未明确:2 };
+const budgetPts = (b) => (b >= 80 ? 40 : b >= 50 ? 32 : b >= 30 ? 24 : b >= 15 ? 16 : b > 0 ? 8 : 4);
+function scores(c){
+  const bp = budgetPts(c.budget), lp = LEVEL_POT[c.level] || 0, fp = c.needFit * 5, tw = TYPE_W[c.type] || 5;
+  const sp = STAGE_PTS[c.stage] || 0, tp = TIMING_PTS[c.timing] || 0, lq = LEVEL_PROB[c.level] || 0, fq = c.needFit * 3;
+  const potential = bp + lp + fp + tw;
+  let prob = sp + tp + lq + fq; if (c.stage === "成交") prob = 100; if (c.stage === "流失") prob = 0;
+  return { potential, prob, priority: Math.round(potential * 0.5 + prob * 0.5), expected: c.budget * prob / 100, parts:{ bp, lp, fp, tw, sp, tp, lq, fq } };
+}
+const normName = (s) => String(s || "").replace(/示例-|有限公司|有限责任公司|公司|佛山市|东莞市|佛山|东莞|制品|厂|\s/g, "").toLowerCase();
+function dupReasons(a, b){
+  const r = [], na = normName(a.name), nb = normName(b.name);
+  if (na && nb && (na === nb || (na.length >= 3 && nb.length >= 3 && (na.includes(nb) || nb.includes(na))))) r.push("公司名相近");
+  const pa = String(a.phone || "").replace(/\D/g, ""), pb = String(b.phone || "").replace(/\D/g, "");
+  if (pa.length >= 7 && pa === pb) r.push("电话相同");
+  if (String(a.wechat || "").trim() && String(a.wechat).trim().toLowerCase() === String(b.wechat || "").trim().toLowerCase()) r.push("微信相同");
+  return r;
+}
+function findDupes(list){
+  const out = {};
+  for (let i = 0; i < list.length; i++) for (let j = i + 1; j < list.length; j++) {
+    const r = dupReasons(list[i], list[j]);
+    if (r.length) { (out[list[i].id] = out[list[i].id] || []).push(list[j].name + "（" + r.join("、") + "）"); (out[list[j].id] = out[list[j].id] || []).push(list[i].name + "（" + r.join("、") + "）"); }
+  }
+  return out;
+}
+
+/* ===== 设备匹配 ===== */
+function matchModel(m){
+  const s = {}; TYPES.filter((t) => t !== "其他").forEach((t) => { s[t] = { type:t, score:0, reasons:[] }; });
+  const add = (t, p, r) => { const f = s[t]; if (f) { f.score += p; if (f.reasons.indexOf(r) < 0) f.reasons.push(r); } };
+  const hasTube = m.tubeMax > 0, hasSheet = !!String(m.sheet || "").trim() && String(m.sheet).trim() !== "无";
+  if (hasTube) { ["门窗与不锈钢加工厂","家具与家电配套厂","五金制品厂"].forEach((t) => add(t, 2, "专用切管，管件下料开孔一次完成")); ["钣金加工厂","汽车零部件厂","激光加工服务商","工程机械与设备制造厂"].forEach((t) => add(t, 1, "可替代锯床下料+钻孔")); }
+  if (hasTube && m.tubeMax >= 200) { add("工程机械与设备制造厂", 3, "最大管径" + m.tubeMax + "mm，覆盖大管结构件"); add("激光加工服务商", 1, "管径覆盖广，接单面宽"); }
+  if (hasTube && m.tubeMax <= 160) { add("家具与家电配套厂", 1, "中小管径正好覆盖家具/家电管件"); add("门窗与不锈钢加工厂", 1, "覆盖扶手、护栏常用规格"); }
+  if (hasTube && m.tubeMin > 0 && m.tubeMin <= 20) { add("五金制品厂", 2, "最小管径" + m.tubeMin + "mm，适合小管件"); add("家具与家电配套厂", 1, "小管径也能做"); }
+  if (m.tubeLen >= 8) { add("工程机械与设备制造厂", 1, "可上" + m.tubeLen + "m长管"); add("门窗与不锈钢加工厂", 1, "长管下料减少拼接"); }
+  if (/H型钢|槽钢|角钢|型钢/.test(m.shapes)) { add("工程机械与设备制造厂", 2, "支持型钢切割"); add("钣金加工厂", 1, "型钢件可一并加工"); }
+  if (/椭圆|腰圆|异形|D型|扁管/.test(m.shapes)) { add("家具与家电配套厂", 2, "支持椭圆/腰圆等异形管"); add("门窗与不锈钢加工厂", 1, "可做异形装饰管"); }
+  if (hasSheet) { add("钣金加工厂", 3, "带板材幅面" + m.sheet + "，板管兼顾"); add("机箱机柜厂", 3, "机柜钣金+立柱一台设备完成"); add("激光加工服务商", 2, "板材管材都能接单"); add("家具与家电配套厂", 1, "板件管件一起做"); }
+  if (m.power > 0 && m.power <= 2000) { add("门窗与不锈钢加工厂", 2, m.power + "W 适合薄壁不锈钢，投入低"); add("家具与家电配套厂", 2, "薄壁管性价比高"); add("机箱机柜厂", 1, "薄料立柱够用"); }
+  if (m.power >= 3000 && m.power < 6000) { add("钣金加工厂", 2, m.power + "W 中功率覆盖常用壁厚"); add("汽车零部件厂", 2, "中功率兼顾效率与成本"); add("五金制品厂", 1, "批量效率高"); add("机箱机柜厂", 1, "厚立柱也能切"); }
+  if (m.power >= 6000) { add("工程机械与设备制造厂", 3, m.power + "W 高功率切厚壁"); add("激光加工服务商", 2, "能接厚料订单"); add("汽车零部件厂", 1, "高节拍"); }
+  if (m.autoLoad) { add("家具与家电配套厂", 2, "自动上料适合大批量"); add("汽车零部件厂", 2, "自动化保证节拍稳定"); add("五金制品厂", 2, "批量小件减少人工"); add("激光加工服务商", 2, "提升稼动率，夜班少人"); }
+  if (m.bevel) { add("工程机械与设备制造厂", 4, "坡口切割：省去铣/磨坡口工序"); add("汽车零部件厂", 1, "可做焊接坡口"); add("钣金加工厂", 1, "焊接结构件坡口"); add("激光加工服务商", 1, "坡口单差异化接单"); }
+  const accM = String(m.accuracy || "").match(/[\d.]+/), acc = accM ? parseFloat(accM[0]) : 0;
+  if (acc > 0 && acc <= 0.05) { add("汽车零部件厂", 2, "精度" + m.accuracy + "，满足一致性要求"); add("机箱机柜厂", 2, "孔位一致，装配顺"); }
+  return Object.values(s).sort((a, b) => b.score - a.score);
+}
+const filled = (v) => v && !String(v).startsWith("（");
+function sellingPoints(m){
+  const p = [];
+  if (m.tubeMax > 0) p.push("切断、开孔、切槽、榫卯一次完成，替代锯床+钻床多道工序（管径 " + m.tubeMin + "–" + m.tubeMax + "mm，管长 " + m.tubeLen + "m）");
+  if (m.power > 0) p.push(m.power + "W：" + (m.power <= 2000 ? "薄壁管性价比高，耗电与投入低" : m.power < 6000 ? "常用碳钢/不锈钢壁厚都能覆盖，效率与成本平衡" : "厚壁管和型钢也能切，接单面更宽"));
+  if (m.autoLoad) p.push("自动上料（" + (m.automation || "自动化") + "）：整捆放料，一人可看多台，缓解招工难");
+  if (m.bevel) p.push("坡口切割" + (filled(m.bevelDesc) ? "（" + m.bevelDesc + "）" : "") + "：切割+坡口一次完成，省去打磨/铣坡口，焊缝更稳定");
+  if (m.shapes) p.push("支持管型：" + m.shapes);
+  if (m.accuracy) p.push("精度 " + m.accuracy + "：批量孔位一致，减少返工和工装");
+  if (filled(m.laser)) p.push("激光器 " + m.laser + "：核心光源，配件与维修渠道成熟");
+  if (filled(m.cnc)) p.push("数控系统 " + m.cnc + "：导图即切，普通工人培训后可上手");
+  if (filled(m.service)) p.push("售后：" + m.service);
+  return p;
+}
+function recommendFor(c){
+  return S.models.map((m) => {
+    const f = matchModel(m).find((x) => x.type === c.type); let s = f ? f.score : 0; const why = f ? f.reasons.slice() : [];
+    if (c.budget > 0 && m.price > 0) { if (m.price <= c.budget * 1.1) { s += 2; why.push("价格在客户预算内"); } else if (m.price > c.budget * 1.3) { s -= 2; why.push("价格明显高于预算，需谈分期或降配"); } }
+    return { m, s, why };
+  }).sort((a, b) => b.s - a.s);
+}
+</script>
+<script>
+"use strict";
+/* ===== 界面状态 ===== */
+const UI = { tab:"today", view:null, follow:"remind", f:{ type:"全部", city:"全部", level:"全部", stage:"全部", kw:"", dup:false }, sort:"priority", showFilter:false, pbType:"钣金加工厂", pbCust:"", edit:false, prep:"" };
+const ICON = {
+  today:'<circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3"/>',
+  cust:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M15.5 4.6a3.5 3.5 0 0 1 0 6.8M18 14.3c2.1.7 3.5 2.8 3.5 5.7"/>',
+  follow:'<path d="M3 4h18l-7 8.5V19l-4 2v-8.5z"/>',
+  scripts:'<path d="M4 4.5h16v11.5H9.5L4 20.5z"/><path d="M8 9h8M8 12.5h5"/>',
+  models:'<rect x="2.5" y="7" width="19" height="10" rx="2"/><path d="M6.5 7V4h4v3M6.5 17v3M17.5 17v3"/><circle cx="15.5" cy="12" r="2"/><path d="M11 3l1.5 4" stroke="#ff6a13"/>',
+  more:'<rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/>'
+};
+const TABS = [["today","今日"],["cust","客户"],["follow","跟进"],["scripts","话术"],["models","设备"],["more","更多"]];
+const MORE = [["market","🗺️","佛山东莞市场","产业带作战地图"],["prep","📋","拜访前清单","一键生成准备清单"],["roi","🧮","回本计算器","人工/外发/材料测算"],["kpi","🎯","本周 KPI","目标与完成情况"],["data","💾","数据与备份","导出、导入、清示例"],["about","ℹ️","使用说明","安装到手机、边界"]];
+
+/* ===== 派生数据 ===== */
+const active = () => S.customers.filter((c) => c.stage !== "成交" && c.stage !== "流失");
+const cById = (id) => S.customers.find((c) => c.id === id);
+const cName = (id) => (cById(id) || {}).name || "（已删除客户）";
+function reminders(){ const t = todayStr(); return active().filter((c) => c.nextDate).map((c) => ({ c, d: diffDays(c.nextDate, t) })).filter((x) => x.d <= 7).sort((a, b) => a.d - b.d); }
+function weekStart(){ const d = new Date(); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return fmt(d); }
+function weekActual(){
+  const wk = weekStart(), inW = (s) => !!s && s >= wk && diffDays(s, wk) < 7;
+  const won = S.reviews.filter((r) => inW(r.date) && r.result === "成交");
+  return { leads:S.customers.filter((c) => inW(c.createdAt)).length, contacts:S.visits.filter((v) => inW(v.date) && (v.kind === "电话" || v.kind === "微信")).length, visits:S.visits.filter((v) => inW(v.date) && v.kind !== "电话" && v.kind !== "微信").length, quotes:S.quotes.filter((q) => inW(q.date)).length, deals:won.length, amount:won.reduce((a, r) => a + (Number(r.amount) || 0), 0) };
+}
+function fillMsg(s, c){ const me = S.me; return String(s).split("{联系人}").join(c && c.contact ? c.contact.replace("示例-", "") : "负责人").split("{公司}").join(c && c.name ? c.name : "贵司").split("{我}").join(me.name).split("{我司}").join(me.company); }
+
+/* ===== 小组件 ===== */
+const tag = (t, cls) => `<span class="tag ${cls || ""}">${esc(t)}</span>`;
+const stageTag = (s) => tag(s, s === "成交" ? "ok" : s === "流失" ? "bad" : "pri");
+function dueTag(d){ return d < 0 ? tag("逾期" + (-d) + "天", "bad") : d === 0 ? tag("今天", "warn") : tag(d + "天后"); }
+const copyBtn = (text, label) => `<button class="btn sm" data-act="copy" data-text="${esc(text)}">📋 ${label || "复制"}</button>`;
+function bars(items, accFirst){ const max = Math.max(1, ...items.map((i) => i.value)); return `<div class="bars">${items.map((i, k) => `<div class="bar"><div class="l"><span>${esc(i.label)}</span><span>${esc(i.display)}</span></div><div class="track"><div class="fill ${accFirst && k === 0 ? "acc" : ""}" style="width:${Math.max(2, i.value / max * 100)}%"></div></div></div>`).join("")}</div>`; }
+function stat(v, l, cls){ return `<div class="stat ${cls || ""}"><div class="v">${esc(v)}</div><div class="l">${esc(l)}</div></div>`; }
+function custCard(c, dupes, extra){
+  const s = scores(c);
+  return `<div class="item" data-act="openCust" data-id="${c.id}">
+    <div class="row1"><div class="tt">${esc(c.name)}</div><div class="lvl ${c.level}">${esc(c.level)}</div></div>
+    <div class="tags">${tag(c.type)}${tag(c.city + "·" + c.district)}${stageTag(c.stage)}${c.sample ? tag("示例", "acc") : ""}${dupes && dupes[c.id] ? tag("疑似重复", "warn") : ""}</div>
+    <div class="meta"><span>预算 <b>${wan(c.budget)}</b></span><span>采购 <b>${esc(c.timing)}</b></span>${c.contact ? `<span>${esc(c.contact)}</span>` : ""}</div>
+    <div class="sbars"><div class="sbar"><div class="l"><span>大单潜力</span><span>${s.potential}</span></div><div class="track"><div class="fill" style="width:${s.potential}%"></div></div></div><div class="sbar"><div class="l"><span>成交可能</span><span>${s.prob}%</span></div><div class="track"><div class="fill acc" style="width:${s.prob}%"></div></div></div></div>
+    ${c.nextAction || c.nextDate ? `<div class="next"><span class="lab">下一步</span><span style="flex:1">${esc(c.nextAction || "（未填写）")}</span>${c.nextDate ? dueTag(diffDays(c.nextDate, todayStr())) : ""}</div>` : ""}
+    ${extra || ""}
+  </div>`;
+}
+
+/* ===== 今日作战 ===== */
+function vToday(){
+  const r = reminders(), od = r.filter((x) => x.d < 0), td = r.filter((x) => x.d === 0), wk = r.filter((x) => x.d > 0);
+  const act = active(), dupes = findDupes(S.customers), wa = weekActual(), t = todayStr();
+  const hot = act.filter((c) => c.level === "A" || scores(c).priority >= 60).sort((a, b) => scores(b).priority - scores(a).priority).slice(0, 6);
+  const pipe = act.reduce((a, c) => a + scores(c).expected, 0);
+  const noNext = act.filter((c) => !c.nextDate || !c.nextAction), stale = act.filter((c) => c.lastContact && diffDays(t, c.lastContact) > 14);
+  const wd = "日一二三四五六"[new Date().getDay()];
+  let h = `<section class="hero"><div class="d">${t} · 星期${wd}</div><div class="t">今日作战</div><div class="s">今天 ${td.length} 项待跟进，逾期 ${od.length} 项，未来 7 天 ${wk.length} 项</div></section>`;
+  h += `<div class="stats">${stat(od.length, "逾期跟进", od.length ? "bad" : "")}${stat(td.length, "今日待办", td.length ? "warn" : "")}${stat(hot.length, "A级/高优先线索", "acc")}${stat(wan(pipe), "管道预期金额")}${stat(wa.deals + " / " + S.kpi.deals, "本周成交 / 目标", "ok")}${stat(wan(wa.amount), "本周成交额")}${stat(stale.length, "超14天未联系")}${stat(act.length, "在跟客户")}</div>`;
+  h += `<div class="grid g2">`;
+  h += `<div class="card"><h2>今天必须处理</h2>${od.length + td.length ? `<div class="list">${od.concat(td).map((x) => custCard(x.c, dupes)).join("")}</div>` : `<div class="empty">今天没有到期的跟进，去客户库开发新线索吧。</div>`}</div>`;
+  h += `<div class="card"><h2>热线索（A级或优先级≥60）</h2>${hot.length ? `<div class="list">${hot.map((c) => `<div class="item" data-act="openCust" data-id="${c.id}"><div class="row1"><div class="tt">${esc(c.name)}</div><div class="lvl ${c.level}">${c.level}</div></div><div class="meta"><span>优先级 <b>${scores(c).priority}</b></span><span>${esc(c.stage)}</span><span>预算 <b>${wan(c.budget)}</b></span></div>${c.nextAction ? `<div class="desc">${esc(c.nextAction)}</div>` : ""}</div>`).join("")}</div>` : `<div class="empty">暂无热线索。</div>`}</div>`;
+  h += `</div>`;
+  const tips = [];
+  if (noNext.length) tips.push(["⚠️", noNext.length + " 家在跟客户没有设定下一步行动或日期", noNext.map((c) => c.name).join("、")]);
+  if (stale.length) tips.push(["⏰", stale.length + " 家客户超过 14 天未联系", stale.map((c) => c.name).join("、")]);
+  const dn = Object.keys(dupes).length; if (dn) tips.push(["🔁", dn + " 条记录疑似重复", "到客户页打开“只看疑似重复”处理"]);
+  if (wk.length) tips.push(["📅", "未来 7 天待跟进 " + wk.length + " 项", wk.map((x) => x.c.name + "（" + x.c.nextDate.slice(5) + "）").join("、")]);
+  if (tips.length) h += `<div class="card"><h2>作战提示</h2><div class="list">${tips.map((x) => `<div class="item" style="cursor:default"><div class="tt">${x[0]} ${esc(x[1])}</div><div class="desc">${esc(x[2])}</div></div>`).join("")}</div></div>`;
+  return h;
+}
+
+/* ===== 客户库 ===== */
+function filteredCustomers(){
+  const f = UI.f, dupes = findDupes(S.customers), kw = f.kw.trim().toLowerCase();
+  const list = S.customers.filter((c) => (f.type === "全部" || c.type === f.type) && (f.city === "全部" || c.city === f.city) && (f.level === "全部" || c.level === f.level) && (f.stage === "全部" || c.stage === f.stage) && (!f.dup || dupes[c.id]) && (!kw || [c.name, c.contact, c.phone, c.wechat, c.products, c.need, c.existing, c.district, c.nextAction].join(" ").toLowerCase().includes(kw)));
+  list.sort((a, b) => { const sa = scores(a), sb = scores(b); switch (UI.sort) { case "potential": return sb.potential - sa.potential; case "prob": return sb.prob - sa.prob; case "next": return (a.nextDate || "9999").localeCompare(b.nextDate || "9999"); case "last": return (b.lastContact || "").localeCompare(a.lastContact || ""); default: return sb.priority - sa.priority; } });
+  return { list, dupes };
+}
+function custListHtml(){ const { list, dupes } = filteredCustomers(); return `<div class="faint" style="margin:0 2px 8px">共 ${list.length} 家${list.length !== S.customers.length ? "（已筛选，总 " + S.customers.length + " 家）" : ""}</div>` + (list.length ? `<div class="list cols">${list.map((c) => custCard(c, dupes)).join("")}</div>` : `<div class="card empty">没有符合条件的客户。</div>`); }
+function vCustomers(){
+  const f = UI.f, nf = ["type","city","level","stage"].filter((k) => f[k] !== "全部").length + (f.dup ? 1 : 0);
+  let h = `<div class="search"><input class="inp" id="kw" type="search" placeholder="搜索公司/联系人/电话/微信/产品" value="${esc(f.kw)}"><button class="btn ${nf ? "acc" : ""}" data-act="toggleFilter">筛选${nf ? " " + nf : ""}</button></div>`;
+  h += `<div class="card ${UI.showFilter ? "" : "hide"}"><div class="frow">
+    <label class="fld"><span>客户类型</span><select class="inp" data-flt="type">${opt(["全部"].concat(TYPES), f.type)}</select></label>
+    <label class="fld"><span>城市</span><select class="inp" data-flt="city">${opt(["全部","佛山","东莞"], f.city)}</select></label>
+    <label class="fld"><span>等级</span><select class="inp" data-flt="level">${opt(["全部"].concat(LEVELS), f.level)}</select></label>
+    <label class="fld"><span>阶段</span><select class="inp" data-flt="stage">${opt(["全部"].concat(STAGES), f.stage)}</select></label>
+    <label class="chk full"><input type="checkbox" data-flt="dup" ${f.dup ? "checked" : ""}> 只看疑似重复</label></div>
+    <div class="btns"><button class="btn sm" data-act="resetFilter">清除筛选</button><button class="btn sm" data-act="showFormula">评分与去重规则</button></div></div>`;
+  h += `<div class="seg">${[["priority","综合优先"],["potential","大单潜力"],["prob","成交可能"],["next","下一步日期"],["last","最近联系"]].map((x) => `<button class="${UI.sort === x[0] ? "on" : ""}" data-act="sort" data-v="${x[0]}">${x[1]}</button>`).join("")}</div>`;
+  h += `<div id="clist">${custListHtml()}</div>`;
+  h += `<button class="fab" data-act="newCust" aria-label="新增客户">＋</button>`;
+  return h;
+}
+function vCustDetail(c){
+  const s = scores(c), dupes = findDupes(S.customers), t = todayStr();
+  let h = `<div class="card"><div class="row1" style="display:flex;gap:10px;align-items:flex-start"><div style="flex:1"><div style="font-size:18px;font-weight:700;line-height:1.35">${esc(c.name)}</div><div class="tags">${tag(c.type)}${tag(c.city + "·" + c.district)}${stageTag(c.stage)}${c.sample ? tag("示例数据", "acc") : ""}</div></div><div class="lvl ${c.level}" style="width:40px;height:40px;font-size:18px">${c.level}</div></div>
+    ${dupes[c.id] ? `<div class="note warn" style="margin-top:12px">疑似重复：${esc(dupes[c.id].join("；"))}</div>` : ""}
+    <div class="qa" style="margin-top:14px">
+      <button class="btn" data-act="editCust" data-id="${c.id}"><i>✏️</i>编辑</button>
+      <button class="btn" data-act="contacted" data-id="${c.id}"><i>✅</i>今天已联系</button>
+      <button class="btn" data-act="addVisit" data-id="${c.id}"><i>📝</i>记拜访</button>
+      <button class="btn" data-act="addQuote" data-id="${c.id}"><i>💰</i>记报价</button>
+      <button class="btn" data-act="goPrep" data-id="${c.id}"><i>📋</i>拜访清单</button>
+      <button class="btn" data-act="goScripts" data-id="${c.id}"><i>💬</i>看话术</button>
+    </div></div>`;
+  h += `<div class="grid g2"><div class="card"><h2>推进</h2><div class="frow">
+    <label class="fld"><span>阶段</span><select class="inp" data-cf="stage" data-id="${c.id}">${opt(STAGES, c.stage)}</select></label>
+    <label class="fld"><span>等级</span><select class="inp" data-cf="level" data-id="${c.id}">${opt(LEVELS, c.level)}</select></label>
+    <label class="fld full"><span>下一步日期</span><input class="inp" type="date" data-cf="nextDate" data-id="${c.id}" value="${esc(c.nextDate)}"></label>
+    <label class="fld full"><span>下一步行动</span><textarea class="inp" data-cf="nextAction" data-id="${c.id}" rows="2">${esc(c.nextAction)}</textarea></label></div>
+    <div class="faint">最近联系：${esc(c.lastContact || "无")}${c.lastContact ? "（" + diffDays(t, c.lastContact) + " 天前）" : ""}</div></div>`;
+  h += `<div class="card"><h2>评分</h2><div class="sbars" style="margin-top:0"><div class="sbar"><div class="l"><span>大单潜力</span><span>${s.potential}/100</span></div><div class="track"><div class="fill" style="width:${s.potential}%"></div></div></div><div class="sbar"><div class="l"><span>成交可能</span><span>${s.prob}%</span></div><div class="track"><div class="fill acc" style="width:${s.prob}%"></div></div></div></div>
+    <dl class="kv" style="margin-top:12px"><dt>预算分</dt><dd>${s.parts.bp}</dd><dt>等级分</dt><dd>${s.parts.lp}（潜力） / ${s.parts.lq}（可能性）</dd><dt>需求匹配</dt><dd>${c.needFit}/5 → ${s.parts.fp} / ${s.parts.fq}</dd><dt>行业权重</dt><dd>${s.parts.tw}</dd><dt>阶段分</dt><dd>${s.parts.sp}</dd><dt>采购时间分</dt><dd>${s.parts.tp}</dd><dt>综合优先级</dt><dd><b>${s.priority}</b></dd><dt>预期金额</dt><dd>${wan(s.expected)}</dd></dl></div></div>`;
+  const info = [["联系人", c.contact], ["电话", c.phone], ["微信", c.wechat], ["官网", c.website], ["主营产品", c.products], ["设备需求", c.need], ["现有设备", c.existing], ["预算", wan(c.budget)], ["采购时间", c.timing], ["来源", c.source], ["录入日期", c.createdAt], ["备注", c.note]];
+  h += `<div class="grid g2"><div class="card"><h2>档案</h2><dl class="kv">${info.map((x) => `<dt>${x[0]}</dt><dd>${esc(x[1] || "—")}</dd>`).join("")}</dl>
+    <div class="btns" style="margin-top:12px">${c.phone ? copyBtn(c.phone, "复制电话") : ""}${c.wechat ? copyBtn(c.wechat, "复制微信") : ""}</div></div>`;
+  const rec = recommendFor(c).slice(0, 2);
+  h += `<div class="card"><h2>推荐机型</h2>${rec.length ? `<div class="list">${rec.map((r) => `<div class="item" data-act="openModel" data-id="${r.m.id}"><div class="row1"><div class="tt">${esc(r.m.name)}</div>${tag("匹配 " + r.s, "pri")}</div><div class="desc">${esc(r.why.slice(0, 4).join("；") || "—")}</div></div>`).join("")}</div>` : `<div class="empty">先在设备页录入机型。</div>`}</div></div>`;
+  const ev = S.visits.filter((v) => v.customerId === c.id).map((v) => ({ d:v.date, k:v.kind, t:v.summary, n:v.next, q:false })).concat(S.quotes.filter((q) => q.customerId === c.id).map((q) => ({ d:q.date, k:"报价", t:q.model + " · " + wan(q.price) + " · 让利" + q.discount + "%", n:q.status, q:true }))).sort((a, b) => b.d.localeCompare(a.d));
+  if (ev.length) h += `<div class="card"><h2>沟通与报价记录</h2><div class="tl">${ev.map((e) => `<div class="ev ${e.q ? "q" : ""}"><div class="faint">${esc(e.d)} · ${esc(e.k)}</div><div>${esc(e.t)}</div>${e.n ? `<div class="faint">→ ${esc(e.n)}</div>` : ""}</div>`).join("")}</div></div>`;
+  h += `<div class="btns full"><button class="btn bad" data-act="delCust" data-id="${c.id}">删除该客户</button></div>`;
+  return h;
+}
+
+/* ===== 跟进：提醒/漏斗/拜访/报价/复盘 ===== */
+function vFollow(){
+  const segs = [["remind","提醒"],["funnel","漏斗"],["visit","拜访"],["quote","报价"],["review","复盘"]];
+  let h = `<div class="seg">${segs.map((x) => `<button class="${UI.follow === x[0] ? "on" : ""}" data-act="follow" data-v="${x[0]}">${x[1]}</button>`).join("")}</div>`;
+  const dupes = findDupes(S.customers);
+  if (UI.follow === "remind") {
+    const r = reminders(), grp = [["已逾期", r.filter((x) => x.d < 0)], ["今天", r.filter((x) => x.d === 0)], ["未来 7 天", r.filter((x) => x.d > 0)]];
+    grp.forEach((g) => { h += `<div class="card"><h2>${g[0]}<span class="grow"></span>${tag(g[1].length + " 项")}</h2>${g[1].length ? `<div class="list cols">${g[1].map((x) => custCard(x.c, dupes)).join("")}</div>` : `<div class="empty">无</div>`}</div>`; });
+  }
+  if (UI.follow === "funnel") {
+    const data = STAGES.filter((s) => s !== "流失").map((s) => { const l = S.customers.filter((c) => c.stage === s); return { s, n:l.length, v:l.reduce((a, c) => a + c.budget, 0) }; });
+    const max = Math.max(1, ...data.map((d) => d.n)), lost = S.customers.filter((c) => c.stage === "流失");
+    h += `<div class="card"><h2>销售漏斗</h2><div class="funnel">${data.map((d) => `<div class="fun"><div class="lab">${d.s}</div><div class="b" style="width:${Math.max(28, d.n / max * 100)}%">${d.n}家 · ${wan(d.v)}</div></div>`).join("")}</div>
+      <div class="faint" style="margin-top:10px">流失 ${lost.length} 家（预算 ${wan(lost.reduce((a, c) => a + c.budget, 0))}）· 整体转化 ${S.customers.length ? Math.round(data[data.length - 1].n / S.customers.length * 100) : 0}% · 条宽=客户数，金额=预算合计</div></div>`;
+    h += `<div class="grid g2"><div class="card"><h2>各阶段预期金额</h2>${bars(STAGES.slice(0, 6).map((s) => { const v = S.customers.filter((c) => c.stage === s).reduce((a, c) => a + scores(c).expected, 0); return { label:s, value:v, display:wan(v) }; }))}<div class="faint" style="margin-top:8px">预期金额 = 预算 × 成交可能性</div></div>`;
+    const bt = TYPES.map((t) => ({ label:t, value:active().filter((c) => c.type === t).length })).filter((x) => x.value).sort((a, b) => b.value - a.value).map((x) => Object.assign(x, { display:x.value + " 家" }));
+    h += `<div class="card"><h2>在跟客户按类型</h2>${bt.length ? bars(bt, true) : `<div class="empty">无</div>`}</div></div>`;
+  }
+  if (UI.follow === "visit") {
+    h += `<div class="btns full" style="margin-bottom:12px"><button class="btn acc" data-act="addVisit">＋ 新增拜访/沟通记录</button></div>`;
+    const v = S.visits.slice().sort((a, b) => b.date.localeCompare(a.date));
+    h += v.length ? `<div class="list cols">${v.map((x) => `<div class="item" style="cursor:default"><div class="row1"><div class="tt">${esc(cName(x.customerId))}</div>${tag(x.kind, "pri")}</div><div class="faint">${esc(x.date)}${x.sample ? " · 示例" : ""}</div><div class="desc">${esc(x.summary)}</div>${x.next ? `<div class="next"><span class="lab">下一步</span><span>${esc(x.next)}</span></div>` : ""}<div class="edit-acts"><button class="btn sm" data-act="editVisit" data-id="${x.id}">编辑</button><button class="btn sm bad" data-act="delVisit" data-id="${x.id}">删除</button></div></div>`).join("")}</div>` : `<div class="card empty">还没有拜访记录。</div>`;
+  }
+  if (UI.follow === "quote") {
+    h += `<div class="btns full" style="margin-bottom:12px"><button class="btn acc" data-act="addQuote">＋ 新增报价</button></div>`;
+    const q = S.quotes.slice().sort((a, b) => b.date.localeCompare(a.date));
+    h += q.length ? `<div class="list cols">${q.map((x) => { const m = S.models.find((y) => y.name === x.model), net = x.price * (1 - x.discount / 100), profit = m ? m.profit - (x.price - net) : null; return `<div class="item" style="cursor:default"><div class="row1"><div class="tt">${esc(cName(x.customerId))}</div>${tag(x.status, x.status === "已接受" ? "ok" : x.status === "已拒绝" ? "bad" : "pri")}</div><div class="desc">${esc(x.model)}</div><div class="meta"><span>报价 <b>${wan(x.price)}</b></span><span>让利 <b>${x.discount}%</b></span><span>成交价 <b>${wan(net)}</b></span><span>预计代理利润 <b>${profit == null ? "—" : wan(profit)}</b></span></div><div class="faint">${esc(x.date)}${x.note ? " · " + esc(x.note) : ""}${x.sample ? " · 示例" : ""}</div><label class="fld" style="margin:10px 0 0"><span>状态</span><select class="inp" data-qs="${x.id}">${opt(QUOTE_STATUS, x.status)}</select></label><div class="edit-acts"><button class="btn sm" data-act="editQuote" data-id="${x.id}">编辑</button><button class="btn sm bad" data-act="delQuote" data-id="${x.id}">删除</button></div></div>`; }).join("")}</div><div class="faint" style="margin-top:8px">预计代理利润 = 机型库代理利润 − 让利金额</div>` : `<div class="card empty">还没有报价记录。</div>`;
+  }
+  if (UI.follow === "review") {
+    h += `<div class="btns full" style="margin-bottom:12px"><button class="btn acc" data-act="addReview">＋ 新增成交复盘</button></div>`;
+    const r = S.reviews.slice().sort((a, b) => b.date.localeCompare(a.date));
+    if (r.length) {
+      const m = {}; r.forEach((x) => { const k = x.result + "·" + x.reason; m[k] = (m[k] || 0) + 1; });
+      const won = r.filter((x) => x.result === "成交").length;
+      h += `<div class="card"><h2>赢单/丢单原因</h2><div class="stats" style="margin-bottom:12px">${stat(Math.round(won / r.length * 100) + "%", "赢单率", "ok")}${stat(won + " / " + r.length, "成交 / 复盘")}</div>${bars(Object.keys(m).map((k) => ({ label:k, value:m[k], display:m[k] + " 单" })).sort((a, b) => b.value - a.value))}</div>`;
+      h += `<div class="list cols">${r.map((x) => `<div class="item" style="cursor:default"><div class="row1"><div class="tt">${esc(cName(x.customerId))}</div>${tag(x.result, x.result === "成交" ? "ok" : "bad")}</div><div class="meta"><span>原因 <b>${esc(x.reason)}</b></span>${x.amount ? `<span>金额 <b>${wan(x.amount)}</b></span>` : ""}${x.competitor ? `<span>对手 <b>${esc(x.competitor)}</b></span>` : ""}</div>${x.lessons ? `<div class="desc">💡 ${esc(x.lessons)}</div>` : ""}<div class="faint">${esc(x.date)}${x.sample ? " · 示例" : ""}</div><div class="edit-acts"><button class="btn sm bad" data-act="delReview" data-id="${x.id}">删除</button></div></div>`).join("")}</div>`;
+    } else h += `<div class="card empty">还没有复盘记录。</div>`;
+  }
+  return h;
+}
+</script>
+<script>
+"use strict";
+/* ===== 话术手册（可编辑） ===== */
+const getList = (scope, key) => (scope === "_shared" ? S.scripts[key] : S.scripts.byType[scope][key]);
+function setList(scope, key, arr){ if (scope === "_shared") S.scripts[key] = arr; else S.scripts.byType[scope][key] = arr; }
+function itemText(key, x, cust){
+  if (key === "msgs") return fillMsg(x.a, cust);
+  if (key === "faq") return "问：" + x.t + "\n答：" + x.a;
+  if (key === "objections") return "客户说：" + x.t + "\n思路：" + x.a + "\n话术：" + x.b;
+  if (key === "tech") return x.t + "：" + x.a;
+  if (key === "pitch") return x.a;
+  return x.t;
+}
+function scriptCard(scope, key, cust){
+  const L = LISTS[key], arr = getList(scope, key), ed = UI.edit;
+  let h = `<div class="card" id="sc-${key}"><h2>${esc(L.label)}<span class="grow"></span>${ed ? `<button class="btn sm" data-act="sAdd" data-scope="${esc(scope)}" data-key="${key}">＋ 新增</button><button class="btn sm ghost" data-act="sReset" data-scope="${esc(scope)}" data-key="${key}">恢复默认</button>` : ""}</h2>`;
+  if (!arr.length) return h + `<div class="empty">暂无内容${ed ? "，点“新增”添加。" : "，打开右上角“编辑话术”添加。"}</div></div>`;
+  h += `<div class="list">`;
+  arr.forEach((x, i) => {
+    const acts = ed ? `<div class="edit-acts"><button class="btn sm icon" data-act="sMove" data-scope="${esc(scope)}" data-key="${key}" data-id="${x.id}" data-dir="-1" ${i === 0 ? "disabled" : ""} aria-label="上移">↑</button><button class="btn sm icon" data-act="sMove" data-scope="${esc(scope)}" data-key="${key}" data-id="${x.id}" data-dir="1" ${i === arr.length - 1 ? "disabled" : ""} aria-label="下移">↓</button><button class="btn sm" data-act="sEdit" data-scope="${esc(scope)}" data-key="${key}" data-id="${x.id}">编辑</button><button class="btn sm bad" data-act="sDel" data-scope="${esc(scope)}" data-key="${key}" data-id="${x.id}">删除</button></div>` : (L.copy ? `<div class="edit-acts">${copyBtn(itemText(key, x, cust))}</div>` : "");
+    let body = "";
+    if (key === "msgs") body = `<div class="tt">${esc(x.t)}</div><div class="msg">${esc(ed ? x.a : fillMsg(x.a, cust))}</div>`;
+    else if (key === "pitch") body = `<div class="tt">${esc(x.t)}</div><div class="desc" style="color:var(--text)">${esc(x.a)}</div>`;
+    else if (key === "faq") body = `<div class="tt">❓ ${esc(x.t)}</div><div class="desc">${esc(x.a)}</div>`;
+    else if (key === "objections") body = `<div class="tt">🗣️ “${esc(x.t)}”</div><div class="desc"><b>思路：</b>${esc(x.a)}</div><div class="desc" style="color:var(--text)"><b>话术：</b>${esc(x.b)}</div>`;
+    else if (key === "tech") body = `<div class="tt">${esc(x.t)}</div><div class="desc">${esc(x.a)}</div>`;
+    else body = `<div class="tt" style="font-weight:500">${key === "qualify" || key === "general" ? (i + 1) + ". " : "• "}${esc(x.t)}</div>`;
+    h += `<div class="item" style="cursor:default">${body}${acts}</div>`;
+  });
+  h += `</div>`;
+  if (!ed && (key === "qualify" || key === "general")) h += `<div class="btns" style="margin-top:10px">${copyBtn(arr.map((x, i) => (i + 1) + ". " + x.t).join("\n"), "复制全部问题")}</div>`;
+  return h + `</div>`;
+}
+function vScripts(){
+  const cust = UI.pbCust ? cById(UI.pbCust) : null, t = UI.pbType;
+  let h = `<div class="card"><div class="frow">
+    <label class="fld"><span>客户类型</span><select class="inp" id="pbType">${opt(TYPES, t)}</select></label>
+    <label class="fld"><span>带入客户（自动填称呼）</span><select class="inp" id="pbCust">${opt([{ v:"", l:"不指定" }].concat(S.customers.map((c) => ({ v:c.id, l:c.name }))), UI.pbCust)}</select></label>
+    <label class="fld"><span>我的名字</span><input class="inp" data-me="name" value="${esc(S.me.name)}"></label>
+    <label class="fld"><span>我的公司</span><input class="inp" data-me="company" value="${esc(S.me.company)}"></label></div>
+    <div class="btns full"><button class="btn ${UI.edit ? "acc" : "pri"}" data-act="toggleEdit">${UI.edit ? "✓ 完成编辑" : "✏️ 编辑话术（增删改、排序）"}</button></div>
+    ${UI.edit ? `<div class="note acc" style="margin:12px 0 0">编辑模式：每条可上移/下移/编辑/删除；每类可“恢复默认”。改动自动保存在本机。行业类内容只改当前选中的「${esc(t)}」。</div>` : `<div class="faint" style="margin-top:10px">复制按钮只把文字放进剪贴板，由你自己发送，本应用不会联系任何客户。</div>`}</div>`;
+  h += `<div class="grid g2">`;
+  TYPE_LIST_ORDER.forEach((k) => { h += scriptCard(t, k, cust); if (k === "qualify") h += scriptCard("_shared", "general", cust); });
+  h += `</div>`;
+  h += scriptCard("_shared", "objections", cust) + scriptCard("_shared", "tech", cust);
+  if (UI.edit) h += `<div class="btns full"><button class="btn bad" data-act="sResetAll">全部话术恢复默认（所有行业）</button></div>`;
+  return h;
+}
+
+/* ===== 设备型号库 ===== */
+function vModels(){
+  let h = S.models.some((m) => m.sample) ? `<div class="note">带“示例”的机型参数只是模板，不是伟卓 WZ 实际参数。请按公司资料录入真实型号、参数、价格和代理利润，再删除示例。</div>` : "";
+  h += S.models.length ? `<div class="list cols">${S.models.map((m) => { const f = matchModel(m).slice(0, 3); return `<div class="item" data-act="openModel" data-id="${m.id}"><div class="row1"><div class="tt">${esc(m.name)}</div>${m.sample ? tag("示例", "acc") : ""}</div>
+    <div class="tags">${tag(m.kind, "pri")}${tag(m.power + "W")}${m.tubeMax ? tag("管径 " + m.tubeMin + "–" + m.tubeMax + "mm") : ""}${m.tubeLen ? tag(m.tubeLen + "m") : ""}${m.bevel ? tag("坡口", "acc") : ""}${m.autoLoad ? tag("自动上料", "ok") : ""}</div>
+    <div class="meta"><span>售价 <b>${wan(m.price)}</b></span><span>代理利润 <b>${wan(m.profit)}</b></span><span>毛利率 <b>${m.price ? Math.round(m.profit / m.price * 100) : 0}%</b></span></div>
+    <div class="next"><span class="lab">最适合</span><span>${esc(f.map((x) => x.type).join("、"))}</span></div></div>`; }).join("")}</div>` : `<div class="card empty">还没有机型，点右下角＋录入。</div>`;
+  return h + `<button class="fab" data-act="newModel" aria-label="新增机型">＋</button>`;
+}
+function vModelDetail(m){
+  const f = matchModel(m), sp = sellingPoints(m);
+  const spec = [["设备类型", m.kind], ["功率", m.power + "W"], ["板材幅面", m.sheet], ["管径", m.tubeMax ? m.tubeMin + "–" + m.tubeMax + "mm" : "—"], ["上料管长", m.tubeLen + "m"], ["管型", m.shapes], ["精度", m.accuracy], ["速度/加速度", m.speed], ["激光器", m.laser], ["切割头", m.head], ["数控系统", m.cnc], ["自动化", (m.autoLoad ? "自动上下料 · " : "") + (m.automation || "")], ["坡口", m.bevel ? "有 " + (m.bevelDesc || "") : "无"], ["售后", m.service], ["售价", wan(m.price)], ["代理利润", wan(m.profit)]];
+  let h = `<div class="card"><div style="font-size:18px;font-weight:700">${esc(m.name)}</div><div class="tags">${m.sample ? tag("示例参数（模板）", "acc") : ""}${tag(m.kind, "pri")}</div><div class="btns" style="margin-top:12px"><button class="btn pri" data-act="editModel" data-id="${m.id}">编辑参数</button><button class="btn bad" data-act="delModel" data-id="${m.id}">删除</button></div></div>`;
+  h += `<div class="grid g2"><div class="card"><h2>最适合的客户类型</h2>${bars(f.slice(0, 6).map((x) => ({ label:x.type, value:x.score, display:x.score + " 分" })), true)}</div>`;
+  h += `<div class="card"><h2>推荐卖点</h2><div class="list">${sp.map((x) => `<div class="item" style="cursor:default"><div class="tt" style="font-weight:500">✅ ${esc(x)}</div></div>`).join("")}</div><div class="btns" style="margin-top:10px">${copyBtn(sp.map((x, i) => (i + 1) + ". " + x).join("\n"), "复制全部卖点")}</div></div></div>`;
+  h += `<div class="card"><h2>匹配理由</h2><div class="list">${f.slice(0, 4).map((x) => `<div class="item" style="cursor:default"><div class="row1"><div class="tt">${esc(x.type)}</div>${tag(x.score + " 分", "pri")}</div><div class="desc">${esc(x.reasons.join("；") || "—")}</div></div>`).join("")}</div><div class="faint" style="margin-top:8px">规则：按管径、管长、管型、板材幅面、功率段、自动上料、坡口、精度逐项给各行业加分。</div></div>`;
+  h += `<div class="card"><h2>参数</h2><dl class="kv">${spec.map((x) => `<dt>${x[0]}</dt><dd>${esc(x[1] || "—")}</dd>`).join("")}</dl></div>`;
+  return h;
+}
+
+/* ===== 更多 ===== */
+function vMore(){ return `<div class="tiles">${MORE.map((x) => `<button class="tile" data-act="openMore" data-v="${x[0]}"><i>${x[1]}</i><b>${x[2]}</b><span>${x[3]}</span></button>`).join("")}</div>`; }
+function vMarket(){
+  let h = `<div class="note">以下为基于公开常识的产业带概括，不是精确统计，请以实地走访为准。</div><div class="list cols">${MARKET.map((r) => `<div class="item" style="cursor:default"><div class="tt">📍 ${esc(r[0])}</div><div class="desc">${esc(r[1])}</div><dl class="kv" style="margin-top:8px"><dt>客户类型</dt><dd>${esc(r[2])}</dd><dt>切入设备</dt><dd>${esc(r[3])}</dd><dt>开发建议</dt><dd>${esc(r[4])}</dd></dl></div>`).join("")}</div>`;
+  const m = {}; S.customers.forEach((c) => { const k = c.city + "·" + c.district; m[k] = (m[k] || 0) + 1; });
+  const items = Object.keys(m).map((k) => ({ label:k, value:m[k], display:m[k] + " 家" })).sort((a, b) => b.value - a.value);
+  h += `<div class="grid g2" style="margin-top:14px"><div class="card"><h2>我的客户分布</h2>${items.length ? bars(items, true) : `<div class="empty">无</div>`}</div><div class="card"><h2>预算合计（不含流失）</h2>${bars(["佛山","东莞"].map((c) => { const v = S.customers.filter((x) => x.city === c && x.stage !== "流失").reduce((a, x) => a + x.budget, 0); return { label:c, value:v, display:wan(v) }; }))}</div></div>`;
+  h += `<div class="card"><h2>开发节奏建议</h2><div class="list">${STEPS.map((s, i) => `<div class="item" style="cursor:default"><div class="tt">${i + 1}. ${esc(s[0])}</div><div class="desc">${esc(s[1])}</div></div>`).join("")}</div></div>`;
+  return h;
+}
+function prepText(c){
+  const L = S.scripts.byType[c.type] || S.scripts.byType["其他"], rec = recommendFor(c)[0];
+  const gaps = []; if (!c.budget) gaps.push("预算区间和付款方式（全款/分期/融资租赁）"); if (c.timing === "未明确") gaps.push("计划采购时间和交期节点"); if (!c.existing) gaps.push("现有设备与产能瓶颈"); if (!c.need) gaps.push("具体加工件、管型规格和月用量");
+  const myV = S.visits.filter((v) => v.customerId === c.id).sort((a, b) => b.date.localeCompare(a.date)), myQ = S.quotes.filter((q) => q.customerId === c.id);
+  const goal = { 线索:"确认联系人和需求真实性，拿到约访", 初步接触:"看现场、拿到管件图纸或样件", 需求确认:"确定规格和工艺，约打样", "拜访/打样":"展示样件、现场回本测算，推进到报价", 报价:"解释报价、处理价格异议、确认付款方式", 谈判:"锁定配置、交期和付款条件，争取签约", 成交:"交付、培训、拿转介绍", 流失:"了解真实原因，保留后续机会" };
+  const special = L.pitch.find((x) => x.t.indexOf("专属") >= 0);
+  const objs = [special ? special.a : "", c.existing ? "已有设备（" + c.existing + "）：定位为补短板/替代外发" : "", c.budget && rec && rec.m.price > c.budget ? "价格高于预算：准备分期方案或降配选项" : ""].filter(Boolean).concat(S.scripts.objections.map((o) => o.t + "：" + o.a));
+  const out = ["【拜访准备】" + c.name, c.city + "·" + c.district + "｜" + c.type + "｜" + c.level + "级｜" + c.stage, "联系人：" + (c.contact || "待确认") + "　最近联系：" + (c.lastContact || "无"), "本次目标：" + (goal[c.stage] || "推进到下一阶段"), "",
+    "一、客户现状", "主营：" + (c.products || "待了解"), "需求：" + (c.need || "待了解"), "现有设备：" + (c.existing || "待了解"), "预算：" + (c.budget ? c.budget + "万" : "未知") + "　采购时间：" + c.timing];
+  if (myV.length) out.push("上次沟通（" + myV[0].date + " " + myV[0].kind + "）：" + myV[0].summary);
+  if (myQ.length) out.push("已报价：" + myQ.map((q) => q.model + " " + q.price + "万（" + q.status + "）").join("；"));
+  out.push("", "二、带什么"); L.bring.forEach((b) => out.push("· " + b.t));
+  out.push("· 推荐机型配置单：" + (rec ? rec.m.name : "（先在设备页录入机型）"), "· 回本测算表（用“回本计算器”按客户数据算好）", "· 同行业案例视频/照片、售后政策、公司资料", "· 名片、笔记本、卷尺/卡尺（现场量管件）", "", "三、要问的问题");
+  L.qualify.concat(S.scripts.general).forEach((q) => out.push("· " + q.t)); gaps.forEach((g) => out.push("· 补齐：" + g));
+  out.push("", "四、可能的异议与应对"); objs.forEach((o) => out.push("· " + o));
+  out.push("", "五、推荐卖点"); (rec ? sellingPoints(rec.m).slice(0, 4) : L.pitch.slice(0, 1).map((x) => x.a)).forEach((s) => out.push("· " + s));
+  out.push("", "六、拜访后 24 小时内：记录拜访、更新阶段和下一步日期");
+  return out.join("\n");
+}
+function vPrep(){
+  const id = UI.prep || (S.customers[0] && S.customers[0].id) || "", c = cById(id);
+  let h = `<div class="card"><label class="fld"><span>选择客户</span><select class="inp" id="prepSel">${opt(S.customers.map((x) => ({ v:x.id, l:x.name })), id, S.customers.length ? null : "暂无客户")}</select></label></div>`;
+  if (c) { const t = prepText(c); h += `<div class="card"><h2>拜访准备清单</h2><div class="msg">${esc(t)}</div><div class="btns full">${copyBtn(t, "复制清单")}<button class="btn" data-act="openCust" data-id="${c.id}">打开客户</button></div></div>`; }
+  return h;
+}
+const ROI_F = [["price","设备总价（万元）"],["workers","可减少工人（人）"],["wage","人均月成本（元）"],["outsource","每月省下外发费（元）"],["material","月管材费（元）"],["gain","材料利用率提升（%）"],["extra","新增接单毛利/月（元）"],["run","新增运行成本/月（电费气体耗材，元）"]];
+function roiCalc(){ const r = S.roi, n = (k) => Number(r[k]) || 0; const ms = n("workers") * n("wage") + n("outsource") + n("material") * n("gain") / 100 + n("extra") - n("run"); return { ms, pb: ms > 0 ? n("price") * 10000 / ms : 0, price:n("price") }; }
+function roiResult(){
+  const { ms, pb, price } = roiCalc();
+  const pts = []; for (let i = 0; i <= 24; i++) pts.push(-price + ms * i / 10000);
+  const mn = Math.min(0, ...pts), mx = Math.max(1, ...pts), W = 360, H = 180, P = 30, x = (i) => P + i * (W - P - 8) / 24, y = (v) => 10 + (mx - v) / (mx - mn) * (H - 34);
+  const path = pts.map((v, i) => (i ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1)).join(" ");
+  const svg = `<svg class="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="累计净收益"><line x1="${P}" x2="${W - 8}" y1="${y(0)}" y2="${y(0)}" stroke="var(--faint)" stroke-dasharray="4 4"/><text x="${W - 8}" y="${y(0) - 4}" text-anchor="end" font-size="10" fill="var(--muted)">回本线</text><path d="${path} L${x(24)} ${y(mn)} L${x(0)} ${y(mn)} Z" fill="var(--acc)" opacity=".10"/><path d="${path}" fill="none" stroke="var(--acc)" stroke-width="2.5"/>${[0, 6, 12, 18, 24].map((i) => `<text x="${x(i)}" y="${H - 6}" text-anchor="middle" font-size="10" fill="var(--muted)">${i}月</text>`).join("")}<text x="2" y="${y(mx) + 4}" font-size="10" fill="var(--muted)">${Math.round(mx)}万</text><text x="2" y="${y(mn)}" font-size="10" fill="var(--muted)">${Math.round(mn)}万</text></svg>`;
+  return `<div class="stats">${stat(Math.round(ms).toLocaleString() + "元", "每月净节省", "acc")}${stat(ms > 0 ? pb.toFixed(1) + "个月" : "—", "回本周期", "ok")}${stat(wan(ms * 12 / 10000), "年节省")}${stat(wan(ms * 36 / 10000 - price), "3年净收益")}</div><div class="card"><h2>累计净收益（24 个月）</h2>${svg}<div class="formula">回本月数 = 设备总价 ÷（减少工人×人均月成本 + 外发费节省 + 月管材费×利用率提升 + 新增毛利 − 新增运行成本）</div>${ms > 0 ? "" : `<div class="note warn">按当前数据每月没有净节省，请核对人工、外发和运行成本。</div>`}</div>`;
+}
+function vRoi(){
+  return `<div class="card"><h2>输入客户数据</h2><div class="note">数字都按客户实际填写；材料利用率、效率提升以打样和客户数据为准。</div><div class="frow">${ROI_F.map((f) => `<label class="fld"><span>${f[1]}</span><input class="inp" type="number" inputmode="decimal" step="any" data-roi="${f[0]}" value="${esc(S.roi[f[0]])}"></label>`).join("")}</div></div><div id="roiRes">${roiResult()}</div>
+  <div class="card"><h2>与现有工艺对比（跟客户讲）</h2><div class="list">${[["锯床 + 钻床/冲床","下料、开孔、切槽一次完成，省掉划线、转运和多台设备操作工；换产品只换程序。"],["冲床（模具）","不用开模，小批量多规格更灵活；大批量单一孔型冲床仍有优势，可分工配合。"],["火焰 / 等离子","切缝窄、热影响小、精度高，后续打磨少；带坡口机型可直接出焊接坡口。"],["外发加工","交期自己掌控，加工利润留在厂里，还能对外接单。"]].map((x) => `<div class="item" style="cursor:default"><div class="tt">vs ${x[0]}</div><div class="desc">${x[1]}</div></div>`).join("")}</div></div>`;
+}
+function vKpi(){
+  const a = weekActual(), k = S.kpi, F = [["leads","新增线索"],["contacts","电话/微信"],["visits","拜访/打样"],["quotes","报价"],["deals","成交（台）"],["amount","成交额（万）"]];
+  return `<div class="card"><h2>本周完成情况（${weekStart()} 起）</h2><div class="bars">${F.map((f) => { const p = k[f[0]] ? Math.min(100, a[f[0]] / k[f[0]] * 100) : 0; return `<div class="bar"><div class="l"><span>${f[1]}</span><span>${f[0] === "amount" ? wan(a[f[0]]) + " / " + wan(k[f[0]]) : a[f[0]] + " / " + k[f[0]]}（${Math.round(p)}%）</span></div><div class="track"><div class="fill ${p >= 100 ? "" : "acc"}" style="width:${Math.max(2, p)}%"></div></div></div>`; }).join("")}</div><div class="faint" style="margin-top:10px">实际数自动取自：客户录入日期、拜访记录（电话/微信算沟通，其余算拜访）、报价记录、成交复盘。</div></div>
+  <div class="card"><h2>设定本周目标</h2><div class="frow f3">${F.map((f) => `<label class="fld"><span>${f[1]}</span><input class="inp" type="number" inputmode="decimal" data-kpi="${f[0]}" value="${esc(k[f[0]])}"></label>`).join("")}</div></div>`;
+}
+function vData(){
+  const n = S.customers.filter((c) => c.sample).length + S.models.filter((m) => m.sample).length + S.visits.filter((x) => x.sample).length + S.quotes.filter((x) => x.sample).length + S.reviews.filter((x) => x.sample).length;
+  return `<div class="note ${STORAGE_OK ? "" : "bad"}">${STORAGE_OK ? "✅ 数据自动保存在本手机浏览器里（不上传任何服务器）。换手机、清理浏览器缓存或在另一个浏览器打开时看不到，请定期备份。" : "⚠️ 当前浏览器不允许本地存储（可能是无痕模式），关闭页面后数据会丢失，请立即复制备份。"}</div>
+  <div class="card"><h2>备份</h2><div class="faint" style="margin-bottom:10px">微信里下载文件不方便时，用“复制备份文本”，粘贴到微信“文件传输助手”或备忘录保存。</div><div class="btns full"><button class="btn pri" data-act="copyBackup">📋 复制备份文本</button><button class="btn" data-act="downloadBackup">⬇️ 下载备份文件</button></div></div>
+  <div class="card"><h2>恢复</h2><label class="fld"><span>粘贴备份文本</span><textarea class="inp" id="importText" rows="4" placeholder="粘贴之前复制的备份文本"></textarea></label><div class="btns full"><button class="btn pri" data-act="importText">导入（覆盖当前数据）</button><label class="btn">📂 选择备份文件<input type="file" id="importFile" accept=".json,.txt,application/json,text/plain" style="display:none"></label></div></div>
+  <div class="card"><h2>示例数据</h2><div class="faint" style="margin-bottom:10px">示例客户、示例机型和示例记录都是虚构的，当前 ${n} 条。</div><div class="btns full"><button class="btn" data-act="clearSamples" ${n ? "" : "disabled"}>🧹 一键清除示例数据</button><button class="btn bad" data-act="resetAll">恢复出厂（清空全部，重新载入示例）</button></div></div>
+  <div class="card"><h2>外观与个人信息</h2><div class="frow"><label class="fld"><span>外观</span><select class="inp" id="themeSel">${opt([{ v:"auto", l:"跟随系统" }, { v:"light", l:"浅色" }, { v:"dark", l:"深色" }], S.theme)}</select></label><label class="fld"><span>我的名字</span><input class="inp" data-me="name" value="${esc(S.me.name)}"></label><label class="fld full"><span>我的公司</span><input class="inp" data-me="company" value="${esc(S.me.company)}"></label></div></div>`;
+}
+function vAbout(){
+  return `<div class="card"><h2>装到手机桌面</h2><div class="list">
+  <div class="item" style="cursor:default"><div class="tt">iPhone（Safari）</div><div class="desc">用 Safari 打开网址 → 点底部“分享”按钮 → “添加到主屏幕”。之后从桌面图标打开，像 App 一样全屏，断网也能用。</div></div>
+  <div class="item" style="cursor:default"><div class="tt">安卓（Chrome/系统浏览器）</div><div class="desc">打开网址 → 右上角菜单 → “添加到主屏幕/安装应用”。</div></div>
+  <div class="item" style="cursor:default"><div class="tt">微信里打开</div><div class="desc">微信内置浏览器不能直接装到桌面：点右上角“···”→“在浏览器打开”，再按上面的方法添加。注意：微信里和浏览器里的数据是分开保存的，固定用一个入口。</div></div></div></div>
+  <div class="card"><h2>评分与去重规则</h2>${formulaHtml()}</div>
+  <div class="card"><h2>使用边界</h2><div class="desc">本应用只做客户管理、销售辅助、市场分析和跟进提醒，不会自动联系客户、拨打电话或发送任何消息；复制按钮只把文字放进剪贴板。所有数据只保存在你自己的设备里。示例客户和示例机型均为虚构，可一键清除。</div></div>`;
+}
+function formulaHtml(){
+  return `<div class="formula">大单潜力 = 预算分(≤40) + 等级分(≤25) + 需求匹配度×5(≤25) + 行业权重(≤10)</div><div class="formula">成交可能性 = 阶段分(≤45) + 采购时间分(≤25) + 等级分(≤15) + 需求匹配度×3(≤15)；成交=100%，流失=0%</div><div class="formula">综合优先级 = 0.5×大单潜力 + 0.5×成交可能性；预期金额 = 预算 × 成交可能性</div>
+  <dl class="kv small" style="margin-top:10px"><dt>预算（万）</dt><dd>≥80→40，≥50→32，≥30→24，≥15→16，>0→8，未知→4</dd><dt>等级</dt><dd>A 25/15，B 18/10，C 10/5，D 4/2（潜力/可能性）</dd><dt>行业权重</dt><dd>工程机械10，汽车零部件9，激光加工服务商9，钣金8，机箱/门窗/家具家电7，五金6，其他5</dd><dt>阶段</dt><dd>线索5，初步接触12，需求确认22，拜访/打样30，报价38，谈判45</dd><dt>采购时间</dt><dd>1个月内25，1-3个月18，3-6个月10，6个月以上4，未明确2</dd><dt>等级定义</dt><dd>A 需求明确+有预算+3个月内；B 有需求但时间/预算未定；C 潜在；D 暂无</dd><dt>去重</dt><dd>公司名去掉“有限公司/厂/佛山/东莞/制品”等后相同或互相包含、电话相同、微信相同，任一命中即标记</dd></dl>`;
+}
+const SUBV = { market:vMarket, prep:vPrep, roi:vRoi, kpi:vKpi, data:vData, about:vAbout };
+const VIEWS = { today:vToday, cust:vCustomers, follow:vFollow, scripts:vScripts, models:vModels, more:vMore };
+</script>
+<script>
+"use strict";
+/* ===== 弹层与表单 ===== */
+let FORM = null;
+function showSheet(){ $("#mask").classList.add("show"); $("#sheet").classList.add("show"); document.body.style.overflow = "hidden"; }
+function closeSheet(){ $("#mask").classList.remove("show"); $("#sheet").classList.remove("show"); document.body.style.overflow = ""; FORM = null; }
+function showInfo(title, html){ FORM = null; $("#shTitle").textContent = title; $("#shBody").innerHTML = html; $("#shFoot").innerHTML = `<button class="btn pri" data-act="closeSheet">知道了</button>`; showSheet(); }
+function fieldHtml(f, v){
+  const id = "f_" + f.k, full = f.full || f.t === "textarea" ? "full" : "";
+  if (f.t === "check") return `<label class="chk ${full}"><input type="checkbox" id="${id}" ${v ? "checked" : ""}> ${esc(f.l)}</label>`;
+  let ctl;
+  if (f.t === "textarea") ctl = `<textarea class="inp" id="${id}" rows="${f.rows || 3}" placeholder="${esc(f.ph || "")}">${esc(v)}</textarea>`;
+  else if (f.t === "select") ctl = `<select class="inp" id="${id}">${opt(f.o, v, f.ph)}</select>`;
+  else ctl = `<input class="inp" id="${id}" type="${f.t === "number" ? "number" : f.t === "date" ? "date" : "text"}" ${f.t === "number" ? 'inputmode="decimal" step="any"' : ""} value="${esc(v)}" placeholder="${esc(f.ph || "")}">`;
+  return `<label class="fld ${full}"><span>${esc(f.l)}</span>${ctl}</label>`;
+}
+function openForm(title, fields, val, onSave, o){
+  o = o || {}; FORM = { fields, onSave, kind:o.kind || "", val };
+  $("#shTitle").textContent = title;
+  $("#shBody").innerHTML = (o.top || "") + `<div class="frow">${fields.map((f) => fieldHtml(f, val[f.k] == null ? "" : val[f.k])).join("")}</div>` + (o.bottom || "");
+  $("#shFoot").innerHTML = `<button class="btn" data-act="closeSheet">取消</button><button class="btn pri" data-act="saveForm">保存</button>`;
+  showSheet(); $("#shBody").scrollTop = 0;
+}
+function readForm(){ const o = {}; FORM.fields.forEach((f) => { const el = $("#f_" + f.k); if (!el) return; o[f.k] = f.t === "check" ? el.checked : f.t === "number" ? (Number(el.value) || 0) : el.value.trim(); }); return o; }
+
+const custOpts = () => S.customers.map((c) => ({ v:c.id, l:c.name }));
+function custFields(c){
+  return [
+    { k:"name", l:"公司名称 *", t:"text", full:true, ph:"如：佛山市XX钣金有限公司" }, { k:"type", l:"客户类型", t:"select", o:TYPES, full:true },
+    { k:"city", l:"城市", t:"select", o:["佛山","东莞"] }, { k:"district", l:"区/镇街", t:"select", o:DISTRICTS[c.city] || [] },
+    { k:"contact", l:"联系人", t:"text" }, { k:"phone", l:"电话", t:"text" }, { k:"wechat", l:"微信", t:"text" }, { k:"website", l:"官网", t:"text" },
+    { k:"budget", l:"预算（万元）", t:"number" }, { k:"timing", l:"采购时间", t:"select", o:TIMINGS },
+    { k:"level", l:"客户等级", t:"select", o:LEVELS }, { k:"stage", l:"销售阶段", t:"select", o:STAGES },
+    { k:"source", l:"来源", t:"select", o:SOURCES }, { k:"needFit", l:"需求匹配度 1–5", t:"select", o:["1","2","3","4","5"] },
+    { k:"lastContact", l:"最近联系时间", t:"date" }, { k:"nextDate", l:"下一步日期", t:"date" },
+    { k:"nextAction", l:"下一步行动", t:"textarea", rows:2 }, { k:"products", l:"主营产品", t:"textarea", rows:2 },
+    { k:"need", l:"设备需求（管型、规格、月用量、痛点）", t:"textarea", rows:3 }, { k:"existing", l:"现有设备", t:"textarea", rows:2 }, { k:"note", l:"备注", t:"textarea", rows:2 }
+  ];
+}
+function openCustForm(c){
+  const isNew = !c.id;
+  openForm(isNew ? "新增客户" : "编辑客户", custFields(c), c, (v) => {
+    if (!v.name) { toast("请填写公司名称"); return false; }
+    v.needFit = Number(v.needFit) || 3;
+    if (isNew) { const n = Object.assign(blankCustomer(), v, { id:uid(), createdAt:todayStr() }); S.customers.unshift(n); toast("已新增客户"); }
+    else { Object.assign(cById(c.id), v); toast("已保存"); }
+  }, { kind:"cust", top:`<div id="dupWarn"></div><div class="faint" style="margin-bottom:10px">等级：A 需求明确+有预算+3个月内；B 有需求但时间/预算未定；C 潜在；D 暂无。</div>` });
+  checkDup();
+}
+function checkDup(){
+  if (!FORM || FORM.kind !== "cust") return; const box = $("#dupWarn"); if (!box) return;
+  const d = { name:$("#f_name").value, phone:$("#f_phone").value, wechat:$("#f_wechat").value }, id = FORM.val.id;
+  const hits = S.customers.filter((c) => c.id !== id).map((c) => ({ c, r:dupReasons(d, c) })).filter((x) => x.r.length);
+  box.innerHTML = hits.length ? `<div class="note warn">可能重复：${esc(hits.map((x) => x.c.name + "（" + x.r.join("、") + "）").join("；"))}。确认不是同一家再保存。</div>` : "";
+}
+function openVisitForm(v){
+  const isNew = !v.id;
+  openForm(isNew ? "新增拜访/沟通记录" : "编辑记录", [
+    { k:"customerId", l:"客户", t:"select", o:custOpts(), ph:"选择客户", full:true }, { k:"date", l:"日期", t:"date" }, { k:"kind", l:"方式", t:"select", o:VISIT_KINDS },
+    { k:"summary", l:"沟通内容 / 现场情况", t:"textarea", rows:4 }, { k:"next", l:"下一步", t:"textarea", rows:2 }
+  ], v, (x) => {
+    if (!x.customerId || !x.summary) { toast("请选择客户并填写内容"); return false; }
+    if (isNew) S.visits.unshift(Object.assign({ id:uid() }, x)); else Object.assign(S.visits.find((y) => y.id === v.id), x);
+    const c = cById(x.customerId); if (c && x.date > (c.lastContact || "")) c.lastContact = x.date;
+    toast("已保存，客户最近联系时间已更新");
+  });
+}
+function openQuoteForm(q){
+  const isNew = !q.id, names = S.models.map((m) => m.name); if (q.model && names.indexOf(q.model) < 0) names.push(q.model);
+  openForm(isNew ? "新增报价" : "编辑报价", [
+    { k:"customerId", l:"客户", t:"select", o:custOpts(), ph:"选择客户", full:true }, { k:"model", l:"机型", t:"select", o:names, ph:"选择机型", full:true },
+    { k:"price", l:"报价（万元）", t:"number" }, { k:"discount", l:"让利（%）", t:"number" }, { k:"date", l:"日期", t:"date" }, { k:"status", l:"状态", t:"select", o:QUOTE_STATUS },
+    { k:"note", l:"备注（配置、付款方式、交期）", t:"textarea", rows:2 }
+  ], q, (x) => {
+    if (!x.customerId || !x.model) { toast("请选择客户和机型"); return false; }
+    if (isNew) S.quotes.unshift(Object.assign({ id:uid() }, x)); else Object.assign(S.quotes.find((y) => y.id === q.id), x);
+    const c = cById(x.customerId); if (c && STAGES.indexOf(c.stage) < STAGES.indexOf("报价")) c.stage = "报价";
+    toast("报价已保存");
+  });
+}
+function openReviewForm(r){
+  openForm("新增成交复盘", [
+    { k:"customerId", l:"客户", t:"select", o:custOpts(), ph:"选择客户", full:true }, { k:"result", l:"结果", t:"select", o:["成交","流失"] },
+    { k:"reason", l:"关键原因", t:"select", o:r.result === "流失" ? LOSS_REASONS : WIN_REASONS }, { k:"amount", l:"成交金额（万元）", t:"number" },
+    { k:"competitor", l:"竞争对手", t:"text" }, { k:"date", l:"日期", t:"date", full:true }, { k:"lessons", l:"经验教训 / 下次怎么做", t:"textarea", rows:3 }
+  ], r, (x) => {
+    if (!x.customerId) { toast("请选择客户"); return false; }
+    S.reviews.unshift(Object.assign({ id:uid() }, x)); const c = cById(x.customerId); if (c) c.stage = x.result;
+    toast("复盘已保存，客户阶段已更新为" + x.result);
+  });
+}
+function openModelForm(m){
+  const isNew = !m.id;
+  openForm(isNew ? "新增机型" : "编辑机型", [
+    { k:"name", l:"型号名称 *", t:"text", full:true, ph:"如 WZ-XXXX" }, { k:"kind", l:"设备类型", t:"select", o:MODEL_KINDS }, { k:"power", l:"功率（W）", t:"number" },
+    { k:"sheet", l:"板材幅面（无则填 无）", t:"text" }, { k:"tubeLen", l:"上料管长（m）", t:"number" }, { k:"tubeMin", l:"最小管径（mm）", t:"number" }, { k:"tubeMax", l:"最大管径（mm）", t:"number" },
+    { k:"shapes", l:"管型（圆管、方矩管、椭圆管、H型钢…）", t:"text", full:true }, { k:"accuracy", l:"精度（如 ±0.05mm）", t:"text" }, { k:"speed", l:"速度/加速度", t:"text" },
+    { k:"laser", l:"激光器品牌", t:"text" }, { k:"head", l:"切割头", t:"text" }, { k:"cnc", l:"数控系统", t:"text" }, { k:"automation", l:"自动化配置说明", t:"text" },
+    { k:"autoLoad", l:"自动上下料", t:"check" }, { k:"bevel", l:"坡口功能", t:"check" }, { k:"bevelDesc", l:"坡口能力（角度/类型）", t:"text", full:true },
+    { k:"price", l:"售价（万元）", t:"number" }, { k:"profit", l:"代理利润（万元）", t:"number" }, { k:"service", l:"售后政策（质保、响应、上门、培训）", t:"textarea", rows:2 }
+  ], m, (x) => {
+    if (!x.name) { toast("请填写型号名称"); return false; }
+    if (isNew) S.models.push(Object.assign(blankModel(), x, { id:uid() })); else Object.assign(S.models.find((y) => y.id === m.id), x);
+    toast("机型已保存");
+  }, { top:`<div class="note">请按公司资料录入真实参数，系统会自动匹配最适合的客户类型并生成卖点。</div>` });
+}
+function openScriptForm(scope, key, item){
+  const L = LISTS[key], isNew = !item;
+  openForm((isNew ? "新增：" : "编辑：") + L.label, L.f.map((f) => ({ k:f[0], l:f[1], t:f[2], full:true, rows:f[2] === "textarea" ? (f[0] === "a" && key === "msgs" ? 7 : 3) : 0 })), item || {}, (x) => {
+    if (!x.t) { toast("请填写" + L.f[0][1]); return false; }
+    const arr = getList(scope, key);
+    if (isNew) arr.push(Object.assign(it(), x)); else Object.assign(arr.find((y) => y.id === item.id), x);
+    toast("已保存");
+  }, { top: scope === "_shared" ? `<div class="note">这一类对所有客户类型通用。</div>` : `<div class="note">只修改「${esc(scope)}」的${esc(L.label)}。</div>` });
+}
+
+/* ===== 复制（兼容 iOS / 微信） ===== */
+function legacyCopy(text){
+  const ta = document.createElement("textarea"); ta.value = text; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;width:1px;height:1px;opacity:0;font-size:16px";
+  document.body.appendChild(ta); const range = document.createRange(); range.selectNodeContents(ta); const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range); ta.setSelectionRange(0, text.length);
+  let ok = false; try { ok = document.execCommand("copy"); } catch (e) { ok = false; } document.body.removeChild(ta); sel.removeAllRanges(); return ok;
+}
+function copyText(text){
+  const fallback = () => { if (legacyCopy(text)) toast("已复制"); else showInfo("请长按复制", `<div class="faint" style="margin-bottom:8px">当前浏览器不支持自动复制，请长按下面的文字全选后复制。</div><textarea class="inp" rows="10" readonly>${esc(text)}</textarea>`); };
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(text).then(() => toast("已复制"), fallback); else fallback();
+}
+let toastT = 0;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove("show"), 1800); }
+
+/* ===== 渲染 ===== */
+function applyTheme(){ if (S.theme === "auto") document.documentElement.removeAttribute("data-theme"); else document.documentElement.setAttribute("data-theme", S.theme); }
+function render(){
+  applyTheme();
+  const v = UI.view; let title, sub = "", body, back = false;
+  if (v && v.k === "cust") { const c = cById(v.id); if (!c) { UI.view = null; return render(); } title = "客户详情"; sub = c.name; body = vCustDetail(c); back = true; }
+  else if (v && v.k === "model") { const m = S.models.find((x) => x.id === v.id); if (!m) { UI.view = null; return render(); } title = "机型详情"; sub = m.name; body = vModelDetail(m); back = true; }
+  else if (v && v.k === "more") { const m = MORE.find((x) => x[0] === v.sub); title = m[2]; sub = m[3]; body = SUBV[v.sub](); back = true; }
+  else { const T = { today:["激光销售作战台","佛山·东莞 · 伟卓 WZ 激光切管/坡口"], cust:["目标客户库","筛选 · 去重 · 评分排序"], follow:["跟进","提醒 · 漏斗 · 拜访 · 报价 · 复盘"], scripts:["话术手册","按客户类型 · 可自由编辑"], models:["设备型号库","参数 · 自动匹配 · 卖点"], more:["更多工具","市场 · 清单 · 回本 · KPI · 数据"] }[UI.tab]; title = T[0]; sub = T[1]; body = VIEWS[UI.tab](); }
+  $("#top").innerHTML = (back ? `<button class="back" data-act="back" aria-label="返回">‹</button>` : `<div class="beam"></div>`) + `<div class="ttl"><h1>${esc(title)}</h1><div class="sub">${esc(sub)}</div></div>`;
+  $("#main").innerHTML = `<div class="wrap">${body}</div>`;
+  const r = reminders(), badge = r.filter((x) => x.d <= 0).length;
+  $("#tabs").innerHTML = TABS.map((t) => `<button class="${UI.tab === t[0] ? "on" : ""}" data-act="tab" data-v="${t[0]}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${ICON[t[0]]}</svg><span>${t[1]}</span>${t[0] === "follow" && badge ? `<span class="badge">${badge}</span>` : ""}</button>`).join("");
+}
+function go(view){ UI.view = view; try { history.pushState({ v:1 }, ""); } catch (e) {} render(); window.scrollTo(0, 0); }
+window.addEventListener("popstate", () => { if ($("#sheet").classList.contains("show")) closeSheet(); UI.view = null; render(); });
+const commit = () => { save(); render(); };
+
+/* ===== 操作 ===== */
+const A = {
+  tab:(d) => { UI.tab = d.v; UI.view = null; render(); window.scrollTo(0, 0); },
+  back:() => { if (history.state && history.state.v) history.back(); else { UI.view = null; render(); } },
+  closeSheet:() => closeSheet(),
+  saveForm:() => { if (!FORM) return; const v = readForm(); if (FORM.onSave(v) === false) return; closeSheet(); commit(); },
+  copy:(d, el) => copyText(el.getAttribute("data-text")),
+  openCust:(d) => go({ k:"cust", id:d.id }), newCust:() => openCustForm(blankCustomer()), editCust:(d) => openCustForm(Object.assign({}, cById(d.id))),
+  delCust:(d) => { const c = cById(d.id); if (!c || !confirm("确定删除「" + c.name + "」？相关拜访、报价、复盘记录会保留但显示为已删除客户。")) return; S.customers = S.customers.filter((x) => x.id !== d.id); UI.view = null; toast("已删除"); commit(); },
+  contacted:(d) => { const c = cById(d.id); c.lastContact = todayStr(); toast("已记录今天联系"); commit(); },
+  goPrep:(d) => { UI.prep = d.id; UI.tab = "more"; go({ k:"more", sub:"prep" }); },
+  goScripts:(d) => { const c = cById(d.id); UI.pbType = c.type; UI.pbCust = c.id; UI.tab = "scripts"; UI.view = null; render(); window.scrollTo(0, 0); },
+  toggleFilter:() => { UI.showFilter = !UI.showFilter; render(); },
+  resetFilter:() => { UI.f = { type:"全部", city:"全部", level:"全部", stage:"全部", kw:"", dup:false }; render(); },
+  showFormula:() => showInfo("评分与去重规则", formulaHtml()),
+  sort:(d) => { UI.sort = d.v; render(); },
+  follow:(d) => { UI.follow = d.v; render(); },
+  addVisit:(d) => openVisitForm({ customerId:d.id || "", date:todayStr(), kind:"电话", summary:"", next:"" }),
+  editVisit:(d) => openVisitForm(Object.assign({}, S.visits.find((x) => x.id === d.id))),
+  delVisit:(d) => { if (!confirm("删除这条拜访记录？")) return; S.visits = S.visits.filter((x) => x.id !== d.id); commit(); },
+  addQuote:(d) => { const m = S.models[0]; openQuoteForm({ customerId:d.id || "", model:m ? m.name : "", price:m ? m.price : 0, discount:0, date:todayStr(), status:"已发送", note:"" }); },
+  editQuote:(d) => openQuoteForm(Object.assign({}, S.quotes.find((x) => x.id === d.id))),
+  delQuote:(d) => { if (!confirm("删除这条报价？")) return; S.quotes = S.quotes.filter((x) => x.id !== d.id); commit(); },
+  addReview:() => openReviewForm({ customerId:"", result:"成交", reason:WIN_REASONS[0], amount:0, competitor:"", lessons:"", date:todayStr() }),
+  delReview:(d) => { if (!confirm("删除这条复盘？")) return; S.reviews = S.reviews.filter((x) => x.id !== d.id); commit(); },
+  toggleEdit:() => { UI.edit = !UI.edit; render(); },
+  sAdd:(d) => openScriptForm(d.scope, d.key, null),
+  sEdit:(d) => openScriptForm(d.scope, d.key, getList(d.scope, d.key).find((x) => x.id === d.id)),
+  sDel:(d) => { const arr = getList(d.scope, d.key), x = arr.find((y) => y.id === d.id); if (!confirm("删除这条：" + String(x.t).slice(0, 30) + "？")) return; setList(d.scope, d.key, arr.filter((y) => y.id !== d.id)); toast("已删除"); commit(); },
+  sMove:(d) => { const arr = getList(d.scope, d.key), i = arr.findIndex((y) => y.id === d.id), j = i + Number(d.dir); if (j < 0 || j >= arr.length) return; const t = arr[i]; arr[i] = arr[j]; arr[j] = t; commit(); },
+  sReset:(d) => { if (!confirm("把「" + LISTS[d.key].label + "」恢复为默认内容？你的修改会被覆盖。")) return; setList(d.scope, d.key, d.scope === "_shared" ? defShared()[d.key] : defTypeLists(d.scope)[d.key]); toast("已恢复默认"); commit(); },
+  sResetAll:() => { if (!confirm("所有行业的话术、问题、FAQ、异议处理、消息模板都恢复默认？你的修改会被覆盖。")) return; S.scripts = defScripts(); toast("全部话术已恢复默认"); commit(); },
+  openModel:(d) => go({ k:"model", id:d.id }), newModel:() => openModelForm(blankModel()), editModel:(d) => openModelForm(Object.assign({}, S.models.find((x) => x.id === d.id))),
+  delModel:(d) => { if (!confirm("删除这个机型？")) return; S.models = S.models.filter((x) => x.id !== d.id); UI.view = null; commit(); },
+  openMore:(d) => go({ k:"more", sub:d.v }),
+  copyBackup:() => copyText(JSON.stringify(S)),
+  downloadBackup:() => { try { const b = new Blob([JSON.stringify(S, null, 1)], { type:"application/json" }), a = document.createElement("a"); a.href = URL.createObjectURL(b); a.download = "激光作战台备份-" + todayStr() + ".json"; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); toast("已开始下载；微信里不行就用“复制备份文本”"); } catch (e) { toast("下载失败，请用“复制备份文本”"); } },
+  importText:() => doImport($("#importText").value),
+  clearSamples:() => { if (!confirm("清除所有示例客户、示例机型和示例记录？你自己录入的数据不受影响。")) return; ["customers","visits","quotes","reviews","models"].forEach((k) => { S[k] = S[k].filter((x) => !x.sample); }); toast("示例数据已清除"); commit(); },
+  resetAll:() => { if (!confirm("清空全部数据并重新载入示例？建议先复制备份。")) return; if (!confirm("再次确认：所有客户、记录、话术修改都会被清空。")) return; S = seed(); toast("已恢复出厂"); commit(); }
+};
+function doImport(txt){
+  try { const p = JSON.parse(String(txt || "").trim()); if (!p || !Array.isArray(p.customers)) { toast("格式不对：不是本应用的备份"); return; } if (!confirm("导入会覆盖当前数据，继续？")) return; S = normalize(p); save(); render(); toast("导入成功：" + S.customers.length + " 个客户"); }
+  catch (e) { toast("解析失败：请粘贴完整的备份文本"); }
+}
+
+/* ===== 事件 ===== */
+document.addEventListener("click", (e) => { const el = e.target.closest("[data-act]"); if (!el || el.disabled) return; const f = A[el.dataset.act]; if (f) { e.preventDefault(); f(el.dataset, el); } });
+$("#mask").addEventListener("click", closeSheet);
+document.addEventListener("input", (e) => {
+  const el = e.target;
+  if (el.id === "kw") { UI.f.kw = el.value; $("#clist").innerHTML = custListHtml(); }
+  else if (el.dataset.roi) { S.roi[el.dataset.roi] = el.value; save(); $("#roiRes").innerHTML = roiResult(); }
+  else if (el.id === "f_name" || el.id === "f_phone" || el.id === "f_wechat") checkDup();
+});
+document.addEventListener("change", (e) => {
+  const el = e.target, d = el.dataset;
+  if (d.flt) { UI.f[d.flt] = el.type === "checkbox" ? el.checked : el.value; render(); }
+  else if (d.cf) { const c = cById(d.id); c[d.cf] = el.value; save(); if (d.cf !== "nextAction") render(); toast("已保存"); }
+  else if (d.qs) { const q = S.quotes.find((x) => x.id === d.qs); q.status = el.value; commit(); }
+  else if (d.kpi) { S.kpi[d.kpi] = Number(el.value) || 0; commit(); }
+  else if (d.me) { S.me[d.me] = el.value; commit(); }
+  else if (el.id === "pbType") { UI.pbType = el.value; const c = cById(UI.pbCust); if (c && c.type !== el.value) UI.pbCust = ""; render(); }
+  else if (el.id === "pbCust") { UI.pbCust = el.value; const c = cById(el.value); if (c) UI.pbType = c.type; render(); }
+  else if (el.id === "prepSel") { UI.prep = el.value; render(); }
+  else if (el.id === "themeSel") { S.theme = el.value; commit(); }
+  else if (el.id === "f_city") { $("#f_district").innerHTML = opt(DISTRICTS[el.value] || [], (DISTRICTS[el.value] || [])[0]); }
+  else if (el.id === "f_result") { $("#f_reason").innerHTML = opt(el.value === "流失" ? LOSS_REASONS : WIN_REASONS, ""); }
+  else if (el.id === "f_model") { const m = S.models.find((x) => x.name === el.value); if (m && $("#f_price")) $("#f_price").value = m.price; }
+  else if (el.id === "importFile" && el.files && el.files[0]) { const r = new FileReader(); r.onload = () => doImport(r.result); r.readAsText(el.files[0]); el.value = ""; }
+});
+
+/* ===== 启动 ===== */
+save(); render();
+if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body>
+</html>
