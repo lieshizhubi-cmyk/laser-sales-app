@@ -1,5 +1,5 @@
 /* 离线缓存：首次打开后无网也能用 */
-const CACHE = 'wz-sales-v1';
+const CACHE = 'wz-sales-v2';
 const ASSETS = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png'];
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ASSETS)).then(() => self.skipWaiting()));
